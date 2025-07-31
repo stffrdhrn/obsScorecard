@@ -35,49 +35,53 @@
 		}
 	}
 
+	function setSelectColor(divId, cvalue) {
+		const selectDiv = document.getElementById(divId);
+
+                selectDiv.value = cvalue;
+		selectDiv.style.background = cvalue;
+		selectDiv.options[0].value = cvalue;
+		/* Set a high contrast font color */
+		if (cvalue == "orange" || cvalue == "khaki"
+		    || cvalue == "tomato" || cvalue == "red"
+		    || cvalue == "orangered" || cvalue == "white"
+		    || cvalue == "orange" || cvalue == "lightgreen"
+		    || cvalue == "lightseagreen") {
+		    selectDiv.style.color= "#000";
+		} else {
+		    selectDiv.style.color= "lightgrey";
+		}
+	}
+
 	function swapColors() {
-		if (localStorage.getItem('p1colorSet') != null){ var p1original = localStorage.getItem('p1colorSet'); } else { var p1original = "white"; }
-		if (localStorage.getItem('p2colorSet') != null){ var p2original = localStorage.getItem('p2colorSet'); } else { var p2original = "white"; }
+		if (localStorage.getItem('p1colorSet') != null) {
+			var p1original = localStorage.getItem('p1colorSet');
+		} else {
+			var p1original = "white";
+		}
+		if (localStorage.getItem('p2colorSet') != null) {
+			var p2original = localStorage.getItem('p2colorSet');
+		} else {
+			var p2original = "white";
+		}
 		setTimeout( function()  {
-                    document.getElementById("p1colorDiv").value = p2original;
-                    document.getElementById("p2colorDiv").value = p1original;
                     bc.postMessage({player:'1',color:p2original});
                     bc.postMessage({player:'2',color:p1original});
 
-		    document.getElementById("p2colorDiv").style.background = p1original;
-                    document.getElementById("p1colorDiv").style.background = p2original;
                     localStorage.setItem('p1colorSet', p2original);
                     localStorage.setItem('p2colorSet', p1original);
 
-		    document.getElementsByTagName("select")[0].options[0].value = p2original;
-                    document.getElementsByTagName("select")[1].options[0].value = p1original;
-                    c1value = p1original;
-                    c2value = p2original;
+		    setSelectColor("p2colorDiv", p1original);
+		    setSelectColor("p1colorDiv", p2original);
 
-		    if (c1value == "orange" || c1value == "khaki" || c1value == "tomato" || c1value == "red" || c1value == "orangered" || c1value == "white" || c1value == "orange" || c1value == "lightgreen" || c1value == "lightseagreen")  { document.getElementById("p2colorDiv").style.color= "#000";} else { document.getElementById("p2colorDiv").style.color= "lightgrey";};
-		    if (c2value == "orange" || c2value == "khaki" || c2value == "tomato" || c2value == "red" || c2value == "orangered" || c2value == "white" || c2value == "orange" || c2value == "lightgreen" || c2value == "lightseagreen")  { document.getElementById("p1colorDiv").style.color= "#000";} else { document.getElementById("p1colorDiv").style.color= "lightgrey";};
 		} , 100);
 	}
 
 	function playerColorChange(player) {
-	    var cvalue  = document.getElementById("p"+player+"colorDiv").value;
-	    if (player == 1) {
-		playerx  =  player;
-		pColormsg = document.getElementById("p"+player+"colorDiv").value;
-		bc.postMessage({player:playerx,color:pColormsg});
-		document.getElementById("p1colorDiv").style.background = document.getElementById("p"+player+"colorDiv").value;
-		if (cvalue == "orange"  || cvalue == "khaki"  || cvalue == "tomato" || cvalue == "red" || cvalue == "orangered" || cvalue == "white" || cvalue == "orange" || cvalue == "lightgreen" || cvalue == "lightseagreen")  { document.getElementById("p1colorDiv").style.color= "#000";} else { document.getElementById("p1colorDiv").style.color= "lightgrey";};
-		localStorage.setItem("p1colorSet", document.getElementById("p"+player+"colorDiv").value);
-		document.getElementsByTagName("select")[0].options[0].value = cvalue;
-	    } else {
-		playerx  =  player;
-		pColormsg = document.getElementById("p"+player+"colorDiv").value;
-		bc.postMessage({player:playerx,color:pColormsg});
-		document.getElementById("p2colorDiv").style.background = document.getElementById("p"+player+"colorDiv").value;
-		if (cvalue == "orange"  || cvalue == "khaki"  || cvalue == "tomato" || cvalue == "red" || cvalue == "orangered" || cvalue == "white" || cvalue == "orange" || cvalue == "lightgreen" || cvalue == "lightseagreen")  { document.getElementById("p2colorDiv").style.color= "#000";} else { document.getElementById("p2colorDiv").style.color= "lightgrey";};
-		localStorage.setItem("p2colorSet", document.getElementById("p"+player+"colorDiv").value);
-		document.getElementsByTagName("select")[1].options[0].value = cvalue;
-	    }
+	    const cvalue  = document.getElementById("p"+player+"colorDiv").value;
+	    bc.postMessage({player:player,color:cvalue});
+	    localStorage.setItem("p1colorSet", cvalue);
+	    setSelectColor("p1colorDiv", cvalue);
 	}
 
 	function postNames() {
@@ -116,6 +120,7 @@
 
 		postStaticScoreCard();
 		storeStaticScoreCardPar();
+		renderScoreCard();
 	}
 
 	function postStaticScoreCard() {
@@ -138,7 +143,7 @@
 		document.getElementById("total").innerHTML = total > 0 ? total : "";
 	}
 
-	function saveScores() {
+	function postScores() {
 		const p1Score = document.getElementById("p1Score");
 		const p2Score = document.getElementById("p2Score");
 
@@ -146,7 +151,6 @@
 		p2Data.scores[currentHole-1] = p2Score.value;
 
 		bc.postMessage({ scores: [ p1Data, p2Data ]});
-		storeScoreCard();
 	}
 
 	function formatScoreCard(playerData) {
@@ -169,11 +173,10 @@
 		return fmt;
 	}
 
-	function loadScores() {
+	function renderScoreCard() {
 		const p1Score = document.getElementById("p1Score");
 		const p2Score = document.getElementById("p2Score");
 		const scoreCardFmt = document.getElementById("scoreCardFmt");
-		let p2Enabled = document.getElementById("p2Enabled").checked;
 
 		if (p1Data.scores[currentHole-1] > 0) {
 			p1Score.value = p1Data.scores[currentHole-1];
@@ -185,51 +188,36 @@
 		} else {
 			p2Score.value = scoreCardPar[currentHole-1];
 		}
+		document.getElementById("currentHole").innerHTML = currentHole;
 		scoreCardFmt.innerHTML =
 			  "  1 2 3 4 5 6 7 8 9  101112131415161718\n" +
 			"P1: " + formatScoreCard(p1Data);
 		if (p2Enabled) {
-			if (p2Data.scores[currentHole-1] > 0) {
-				p2Score.value = p2Data.scores[currentHole-1];
-			} else {
-				p2Score.value = scoreCardPar[currentHole-1];
-			}
 			scoreCardFmt.innerHTML += "\n" +
 				"P2: " + formatScoreCard(p2Data);
 		}
 	}
 
 	function nextHole() {
-		// Save current hole data
-		saveScores();
+		// Post current hole data
+		postScores();
 
 		if (currentHole < scoreCardHoles) {
 			currentHole++;
 		}
+		storeScoreCard();
 
 		// Load next hole data
-		document.getElementById("currentHole").innerHTML = currentHole;
-		loadScores();
+		renderScoreCard();
 	}
 
 	function prevHole() {
-		// Save current hole data
-		saveScores();
-
 		if (currentHole > 1) {
 			currentHole--;
 		}
-		document.getElementById("currentHole").innerHTML = currentHole;
-		loadScores();
+		storeScoreCard();
+		renderScoreCard();
 	}
-
-	function rst_scr_btn() {
-		document.getElementById('settingsBox2').style.border = "none";
-		document.getElementById('logoSsImg1').style.border = "none";
-		document.getElementById('logoSsImg2').style.border = "none";
-		document.getElementById('logoSsImg3').style.border = "none";
-	}
-
 
 	/* Read static score card from local storage */
 	function loadStaticScoreCard() {
@@ -263,17 +251,20 @@
 		if (p2ScoreCard != null) {
 			p2Data.scores = p2ScoreCard.split(",");
 		}
+		let storedCurrentHole = localStorage.getItem("currentHole");
+		if (storedCurrentHole != null) {
+			currentHole = Number(storedCurrentHole);
+		}
 	}
 
 	function storeScoreCard() {
 		localStorage.setItem("p1ScoreCard", p1Data.scores.join());
 		localStorage.setItem("p2ScoreCard", p2Data.scores.join());
+		localStorage.setItem("currentHole", currentHole);
 	}
 
 	function resetScore() {
 		if (confirm("Click OK to confirm score reset")) {
-		p1ScoreValue = 0;
-		p2ScoreValue = 0;
 		localStorage.setItem("p1ScoreCtrlPanel", 0);
 		localStorage.setItem("p2ScoreCtrlPanel", 0);
 		bc.postMessage({player:'1',score:'0'});
@@ -283,7 +274,7 @@
 
 	function obsThemeChange() {
 		if (document.getElementById("obsTheme").value ==  "28") {
-			localStorage.setItem("obsTheme", "28"); 
+			localStorage.setItem("obsTheme", "28");
 			document.getElementById("obsTheme").value =  "28";
 			document.getElementsByTagName("body")[0].style.background = "#2b2e38";
 			document.styleSheets[0].disabled = false;
@@ -295,7 +286,7 @@
 
 		}
 		if (document.getElementById("obsTheme").value ==  "27") {
-			localStorage.setItem("obsTheme", "27"); 
+			localStorage.setItem("obsTheme", "27");
 			document.getElementById("obsTheme").value =  "27";
 			document.getElementsByTagName("body")[0].style.background = "#1f1e1f";
 			document.styleSheets[0].disabled = true;
@@ -306,7 +297,7 @@
 			document.styleSheets[5].disabled = true;
 		}
 		if (document.getElementById("obsTheme").value ==  "acri") {
-			localStorage.setItem("obsTheme", "acri"); 
+			localStorage.setItem("obsTheme", "acri");
 			document.getElementById("obsTheme").value =  "acri";
 			document.getElementsByTagName("body")[0].style.background = "#181819";
 			document.styleSheets[0].disabled = true;
@@ -317,7 +308,7 @@
 			document.styleSheets[5].disabled = true;
 		}
 		if (document.getElementById("obsTheme").value ==  "grey") {
-			localStorage.setItem("obsTheme", "grey"); 
+			localStorage.setItem("obsTheme", "grey");
 			document.getElementById("obsTheme").value =  "grey";
 			document.getElementsByTagName("body")[0].style.background = "#2f2f2f";
 			document.styleSheets[0].disabled = true;
@@ -328,7 +319,7 @@
 			document.styleSheets[5].disabled = true;
 		}
 		if (document.getElementById("obsTheme").value ==  "light") {
-			localStorage.setItem("obsTheme", "light"); 
+			localStorage.setItem("obsTheme", "light");
 			document.getElementById("obsTheme").value =  "light";
 			document.getElementsByTagName("body")[0].style.background = "#e5e5e5";
 			document.styleSheets[0].disabled = true;
@@ -339,7 +330,7 @@
 			document.styleSheets[5].disabled = true;
 		}
 		if (document.getElementById("obsTheme").value ==  "rachni") {
-			localStorage.setItem("obsTheme", "rachni"); 
+			localStorage.setItem("obsTheme", "rachni");
 			document.getElementById("obsTheme").value =  "rachni";
 			document.getElementsByTagName("body")[0].style.background = "#232629";
 			document.styleSheets[0].disabled = true;
@@ -447,36 +438,17 @@
 	var hotkeyP1ScoreDownOld = hotkeyP1ScoreDown;
 	var hotkeyP2ScoreDownOld = hotkeyP2ScoreDown;
 	var hotkeySwapOld = hotkeySwap;
-	var tev;
-	var p1ScoreValue;
-	var p2ScoreValue;
-	var warningBeep = new Audio("./common/sound/beep2.mp3");
-	var foulSound = new Audio("./common/sound/buzz.mp3");
-	var msg;
-	var msg2;
 	var slider = document.getElementById("scoreOpacity");
-	var sliderValue;
-	var playerNumber;
-	var playerx;
-	var c1value;
-	var c2value;
-	var pColormsg;
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// onload stuff
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	slider.oninput = function() {
-		sliderValue = this.value/100;
+		const sliderValue = this.value/100;
 		bc.postMessage({opacity:sliderValue});
 		localStorage.setItem("opacity", this.value);
 	}
-
-	document.getElementById('settingsBox2').onclick = function() {
-			document.getElementById('settingsBox2').style.border = "1px solid blue";
-			document.getElementById('FileUploadL0').click();
-			setTimeout(rst_scr_btn,100);
-			};
 
 	if (localStorage.getItem('p1colorSet') !== null) {
 		var cvalue = localStorage.getItem('p1colorSet');
@@ -505,7 +477,7 @@
 	});
 	postStaticScoreCard();
 	loadScoreCard();
-	loadScores();
+	renderScoreCard();
 
 	if (localStorage.getItem("obsTheme") == "28") { document.getElementById("obsTheme").value = "28"; }
 	if (localStorage.getItem("b_style") == "1") { document.getElementById("bsStyle").value = "1"; }

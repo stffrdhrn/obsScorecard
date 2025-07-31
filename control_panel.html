@@ -78,7 +78,9 @@ for more information about Salotto please visit https://salotto.app
 		    <p style="font-size:1.5pt">&nbsp;</p>
 		    <div class="hover obs28" id="sendPNames" onclick="postNames()">Update Info</div>
 		    <p style="font-size:1.5pt">&nbsp;</p>
-			<select style="text-align:justify" name="p1Colors" id="p1colorDiv" class="obs28" onchange="playerColorChange(1)">
+			<select style="text-align:justify"
+				id="p1colorDiv"
+				class="obs28" onchange="playerColorChange(1)">
 			    <option value="" default>P1 Color</option>
 			    <option value="grey">Grey</option>
 			    <option value="steelblue">SteelBlue</option>
@@ -95,8 +97,9 @@ for more information about Salotto please visit https://salotto.app
 			    <option value="purple">Purple</option>
 			    <option value="white">White</option>
 			</select>
-			<select style="text-align:justify" name="p2Colors"
-			        id="p2colorDiv" class="obs28" onchange="playerColorChange(2)">
+			<select style="text-align:justify"
+			        id="p2colorDiv"
+				class="obs28" onchange="playerColorChange(2)">
 			    <option value="" default>P2 Color</option>
 			    <option value="grey">Grey</option>
 			    <option value="steelblue">SteelBlue</option>
@@ -183,29 +186,6 @@ for more information about Salotto please visit https://salotto.app
 		<p style="font-size:8.25pt">&nbsp;</p><hr>
 
 		<div class="hover obs28" id="resetBtn" onclick="resetScore()">Reset Scores and Extensions</div><p style="font-size:1.5pt">&nbsp;</p>
-
-		<div class="obs28" id="settingsBox3">
-		<text>Logo Image Upload<br>Max size: 2.4MB</text>
-		</div><p style="font-size:1px">&nbsp;</p>
-		<div class="hover obs28 tooltip" id="settingsBox2">Upload Custom Logo
-			<input type="file" id="FileUploadL0" onchange="logoPost(this,0)" accept="image/png, image/jpeg, image/svg+xml, image/bmp" />
-			<span class="tooltiptext"><img id="l0Img" src="" style="height:30px; max-width:70px"></span>
-			<br>
-		</div>
-		<p style="font-size:9.5pt">&nbsp;</p>
-		<div class="obs28" id="logoSlideShowDiv">
-			<span>Sponsor Logos:<input class="smallSize" type="checkbox" id="logoSlideshowChk" onchange="logoSlideshow()"></span> 
-		</div>
-		<div class="tooltip obs28 hover" id="logoSsImg1"><input type="file" id="FileUploadL1" onchange="logoPost(this,1)" accept="image/png, image/jpeg, image/svg+xml, image/bmp" />
-			L1 <span class="tooltiptext"><img id="l1Img" src="" style="height:30px; max-width:70px"></span>
-		</div>
-		<div class="tooltip obs28 hover" id="logoSsImg2"><input type="file" id="FileUploadL2" onchange="logoPost(this,2)" accept="image/png, image/jpeg, image/svg+xml, image/bmp" />
-			L2 <span class="tooltiptext"><img id="l2Img" src="" style="height:30px; max-width:70px"></span>
-		</div>
-		<div class="tooltip obs28 hover" id="logoSsImg3"><input type="file" id="FileUploadL3" onchange="logoPost(this,3)" accept="image/png, image/jpeg, image/svg+xml, image/bmp" />
-			L3<span class="tooltiptext"><img id="l3Img" src="" style="height:30px; max-width:70px"></span>
-		</div>
-		<p style="font-size:11px">&nbsp;</p>
 		<div class="slidecontainer">
 			<input type="range" min="0" max="100" value="100" class="slider" id="scoreOpacity">
 		</div></center>
