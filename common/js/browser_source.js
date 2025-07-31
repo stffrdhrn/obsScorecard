@@ -25,33 +25,6 @@ function sleep(milliseconds) {
 		}
 	}
 }
-function clearExtBlink(playerN) {
-	document.getElementById("p" + playerN + "ExtIcon").classList.remove("extBlink");
-	document.getElementById("p" + playerN + "ExtIcon").style.background = "darkred";
-
-}
-
-function extReset(player) {
-	document.getElementById(player + "ExtIcon").style.background = "green";
-
-}
-
-function setPlayerScore(player,score) {
-	document.getElementById(player).innerHTML = score == 0 ? 'E' : score;
-	document.getElementById(player).classList.add("winBlink");
-
-	document.getElementById(player).classList.remove("evenPar");
-	document.getElementById(player).classList.remove("overPar");
-	document.getElementById(player).classList.remove("underPar");
-        if (score == 0) {
-	   document.getElementById(player).classList.add("evenPar");
-        } else if (score > 0) {
-	   document.getElementById(player).classList.add("overPar");
-        } else {
-	   document.getElementById(player).classList.add("underPar");
-        }
-	setTimeout("clearWinBlink()", 500);
-}
 
 function renderScoreCard() {
     document.getElementById("scoreCardFull").innerHTML = formatScoreCard();
@@ -89,8 +62,8 @@ function styleChange(n) {
 
 function formatScoreCard() {
 
-	let headerRow = "<tr class=\"scHeader\">";
-	let parRow = "<tr class=\"scSubHeader\">";
+	let headerRow = "<tr class=\"scHeader\"><td>&nbsp;</td>";
+	let parRow = "<tr class=\"scSubHeader\"><td>&nbsp;</td>";
 	let scoreRow = "";
 	let parTotal = 0;
 	const playerCount = staticScoreCard.players.length;
@@ -98,7 +71,10 @@ function formatScoreCard() {
 
 	for (let i = 0; i < playerCount; i++) {
 		playerScores[i] = {};
-		playerScores[i].row = "<tr class=\"scData\">";
+		playerScores[i].row =
+			"<tr class=\"scData\"><td class=\"scName\">"
+			+ staticScoreCard.players[i].name
+			+ "</td>";
 		playerScores[i].total = 0;
 	}
 
@@ -225,6 +201,7 @@ if (localStorage.getItem("p1NameCtrlPanel") != null) {
 }
 
 if (localStorage.getItem("p2NameCtrlPanel") != null && localStorage.getItem("p2Enabled") === "y") {
+	staticScoreCard.players[1] = {};
 	staticScoreCard.players[1].name = localStorage.getItem("p2NameCtrlPanel");
 }
 let storedScoreCardPar = localStorage.getItem("scoreCardPar");
