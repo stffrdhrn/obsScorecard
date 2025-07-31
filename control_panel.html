@@ -1,0 +1,282 @@
+<!doctype html>
+<!--
+  G4ScoreBoard addon for OBS version 1.6.2 Copyright 2025 Norman Gholson IV
+  https://g4billiards.com http://www.g4creations.com
+  this is a purely javascript/html/css driven scoreboard system for OBS Studio
+  free to use and modify and use as long as this copyright statment remains intact.
+Salotto logo is the copyright of Salotto and is used with their permission.
+for more information about Salotto please visit https://salotto.app
+-->
+
+<html>
+    <head>
+	<link rel="stylesheet" href="./common/css/control_panel/yami.css" />
+	<link rel="stylesheet" href="./common/css/control_panel/dark.css" />
+	<link rel="stylesheet" href="./common/css/control_panel/acri.css" />
+	<link rel="stylesheet" href="./common/css/control_panel/grey.css" />
+	<link rel="stylesheet" href="./common/css/control_panel/light.css" />
+	<link rel="stylesheet" href="./common/css/control_panel/rachni.css" />
+	<link rel="stylesheet" href="./common/css/control_panel/required.css" />
+	<script>
+	 //---------------------------------------------------------------------------------------------
+	 var versionNum = "1.0.0";
+	 //---------------------------------------------------------------------------------------------
+	 </script>
+	 <script src="./common/js/jquery.js"></script>
+	 <script src="hotkeys.js"></script>
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+	</head>
+	<body>
+		<div id="mainDiv">
+		   <center><div id="topPlayerGameInfo" class="obs28">
+		   <table>
+                    <tr>
+		      <td>Player/Team 1 Name:</td>
+                      <td><input style="font-size:8pt; width: 120px; background:lightgrey"
+                                 type="text" id="p1Name" placeholder="Player 1"></td>
+                      <td>&nbsp;</td>
+		    </tr>
+                    <tr>
+		      <td>Player/Team 2 Name:</td>
+                      <td><input style="font-size:8pt; width: 120px; background:lightgrey"
+				 type="text" id="p2Name" placeholder="Player 2"></td>
+		      <td><input class="smallSize" type="checkbox"
+                               id="p2Enabled" onclick="playerToggle()"></td>
+		     </tr>
+                   </table>
+                   <!-- Scorecard creation -->
+                   <table>
+                     <tr>
+		       <td>Front</td>
+                       <td><input type="text" id="h1" class="hole" placeholder="4"></td>
+                       <td><input type="text" id="h2" class="hole" placeholder="4"></td>
+                       <td><input type="text" id="h3" class="hole" placeholder="4"></td>
+                       <td><input type="text" id="h4" class="hole" placeholder="4"></td>
+                       <td><input type="text" id="h5" class="hole" placeholder="4"></td>
+                       <td><input type="text" id="h6" class="hole" placeholder="4"></td>
+                       <td><input type="text" id="h7" class="hole" placeholder="4"></td>
+                       <td><input type="text" id="h8" class="hole" placeholder="4"></td>
+                       <td><input type="text" id="h9" class="hole" placeholder="4"></td>
+                       <td><span id="front9"></span></td>
+                       <td>&nbsp;</td>
+		     </tr>
+                     <tr>
+		       <td>Back</td>
+ 		       <td><input type="text" id="h10" class="hole" placeholder="4"></td>
+                       <td><input type="text" id="h11" class="hole" placeholder="4"></td>
+                       <td><input type="text" id="h12" class="hole" placeholder="4"></td>
+                       <td><input type="text" id="h13" class="hole" placeholder="4"></td>
+                       <td><input type="text" id="h14" class="hole" placeholder="4"></td>
+                       <td><input type="text" id="h15" class="hole" placeholder="4"></td>
+                       <td><input type="text" id="h16" class="hole" placeholder="4"></td>
+                       <td><input type="text" id="h17" class="hole" placeholder="4"></td>
+                       <td><input type="text" id="h18" class="hole" placeholder="4"></td>
+                       <td><span id="back9"></span></td>
+                       <td><span id="total"></span></td>
+                     </tr>
+                   </table>
+		    <p style="font-size:1.5pt">&nbsp;</p>
+		    <div class="hover obs28" id="sendPNames" onclick="postNames()">Update Info</div>
+		    <p style="font-size:1.5pt">&nbsp;</p>
+			<select style="text-align:justify" name="p1Colors" id="p1colorDiv" class="obs28" onchange="playerColorChange(1)">
+			    <option value="" default>P1 Color</option>
+			    <option value="grey">Grey</option>
+			    <option value="steelblue">SteelBlue</option>
+			    <option value="cadetblue">CadetBlue</option>
+			    <option value="blue">Blue</option>
+			    <option value="tomato">Tomato</option>
+			    <option value="red">Red</option>
+			    <option value="orangered">OrangeRed</option>
+			    <option value="orange">Orange</option>
+			    <option value="khaki">Khaki</option>
+			    <option value="green">Green</option>
+			    <option value="lightgreen">lightGreen</option>
+			    <option value="lightseagreen">SeaGreen</option>
+			    <option value="purple">Purple</option>
+			    <option value="white">White</option>
+			</select>
+			<select style="text-align:justify" name="p2Colors"
+			        id="p2colorDiv" class="obs28" onchange="playerColorChange(2)">
+			    <option value="" default>P2 Color</option>
+			    <option value="grey">Grey</option>
+			    <option value="steelblue">SteelBlue</option>
+			    <option value="cadetblue">CadetBlue</option>
+			    <option value="blue">Blue</option>
+			    <option value="tomato">Tomato</option>
+			    <option value="red">Red</option>
+			    <option value="orangered">OrangeRed</option>
+			    <option value="orange">Orange</option>
+			    <option value="khaki">Khaki</option>
+			    <option value="green">Green</option>
+			    <option value="lightgreen">lightGreen</option>
+			    <option value="lightseagreen">SeaGreen</option>
+			    <option value="purple">Purple</option>
+			    <option value="white">White</option>
+			</select>
+		<div class="hover obs28" onclick="swapColors()" id="swapBtn"><text style="font-size:2pt">&nbsp;</text>Swap</div>
+		<hr>
+		<div class="float4">Hole: </div>
+		<div id="currentHole" class="float4">1</div>
+		<p style="font-size:9.5pt">&nbsp;</p>
+		<pre id="scoreCardFmt">
+ P1: - - - - - - - - -  - - - - - - - - - --
+ P2: - - - - - - - - -  - - - - - - - - - --
+		</pre>
+		<hr>
+		<div class="ctl-group">
+		<table class="playerData">
+		  <tr>
+		    <td colspan="2">
+		      <div id="p1ScoreLabel">Player 1 Stats</div>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td>Score:</td>
+                    <td><input type="number" id="p1Score" placeholder="4"></td>
+		  </tr>
+       		  <tr>
+		    <td>Fairway: </td>
+		    <td><div class="hover obs28 float1">&lt;</div>
+			<div class="hover obs28 float1">Hit</div>
+			<div class="hover obs28 float1">&gt;</div>
+                    </td>
+                  </tr>
+       		  <tr>
+		    <td>Putts: </td>
+                    <td><input type="number" id="p1Putts" placeholder="4"></td>
+                  </tr>
+       	    	  <tr>
+		  </tr>
+		</table>
+		</div>
+
+		<div class="ctl-group" id="player2DataGroup">
+		<table class="playerData">
+		  <tr>
+		    <td colspan="2">
+		      <div id="p2ScoreLabel">Player 2 Stats</div>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td>Score:</td>
+                    <td><input type="number" id="p2Score" placeholder="4"></td>
+		  </tr>
+       		  <tr>
+		    <td>Fairway: </td>
+		    <td><div class="hover obs28 float1">&lt;</div>
+			<div class="hover obs28 float1">Hit</div>
+			<div class="hover obs28 float1">&gt;</div>
+                    </td>
+                  </tr>
+       		  <tr>
+		    <td>Putts: </td>
+                    <td><input type="number" id="p2Putts" placeholder="4"></td>
+                  </tr>
+       	    	  <tr>
+		  </tr>
+		</table>
+		</div>
+
+		<div class="hover obs28 float4" onclick="prevHole()" >&lt; Prev</div>
+		<div class="hover obs28 float4" onclick="nextHole()">Next &gt;</div>
+
+		<p style="font-size:8.25pt">&nbsp;</p><hr>
+
+		<div class="hover obs28" id="resetBtn" onclick="resetScore()">Reset Scores and Extensions</div><p style="font-size:1.5pt">&nbsp;</p>
+
+		<div class="obs28" id="settingsBox3">
+		<text>Logo Image Upload<br>Max size: 2.4MB</text>
+		</div><p style="font-size:1px">&nbsp;</p>
+		<div class="hover obs28 tooltip" id="settingsBox2">Upload Custom Logo
+			<input type="file" id="FileUploadL0" onchange="logoPost(this,0)" accept="image/png, image/jpeg, image/svg+xml, image/bmp" />
+			<span class="tooltiptext"><img id="l0Img" src="" style="height:30px; max-width:70px"></span>
+			<br>
+		</div>
+		<p style="font-size:9.5pt">&nbsp;</p>
+		<div class="obs28" id="logoSlideShowDiv">
+			<span>Sponsor Logos:<input class="smallSize" type="checkbox" id="logoSlideshowChk" onchange="logoSlideshow()"></span> 
+		</div>
+		<div class="tooltip obs28 hover" id="logoSsImg1"><input type="file" id="FileUploadL1" onchange="logoPost(this,1)" accept="image/png, image/jpeg, image/svg+xml, image/bmp" />
+			L1 <span class="tooltiptext"><img id="l1Img" src="" style="height:30px; max-width:70px"></span>
+		</div>
+		<div class="tooltip obs28 hover" id="logoSsImg2"><input type="file" id="FileUploadL2" onchange="logoPost(this,2)" accept="image/png, image/jpeg, image/svg+xml, image/bmp" />
+			L2 <span class="tooltiptext"><img id="l2Img" src="" style="height:30px; max-width:70px"></span>
+		</div>
+		<div class="tooltip obs28 hover" id="logoSsImg3"><input type="file" id="FileUploadL3" onchange="logoPost(this,3)" accept="image/png, image/jpeg, image/svg+xml, image/bmp" />
+			L3<span class="tooltiptext"><img id="l3Img" src="" style="height:30px; max-width:70px"></span>
+		</div>
+		<p style="font-size:11px">&nbsp;</p>
+		<div class="slidecontainer">
+			<input type="range" min="0" max="100" value="100" class="slider" id="scoreOpacity">
+		</div></center>
+	<div class="themeSizeLabels" id="obsThemeLabel">Board size:
+	    <select class="obs28" name="bsstyle" id="bsStyle" onchange="bsStyleChange()">
+		<option value="1">small</option>
+		<option value="2" selected>medium</option>
+		<option value="3">large</option>
+		<option value="4">XL</option>
+	    </select>
+	</div>
+	<div class="themeSizeLabels" id="obsThemeDiv">Control theme:
+            <p style="font-size:1px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+	    <select class="obs28" name="Theme" id="obsTheme" onchange="obsThemeChange()">
+           	<option value="27" selected>dark</option>
+            	<option value="28">yami</option>
+		<option value="acri">acri</option>
+		<option value="grey">grey</option>
+		<option value="light">light</option>
+		<option value="rachni">rachni</option>
+	    </select>
+	</div>
+	<p style="font-size:2px">&nbsp;</p><text style="font-size:7pt; color:#818181; position:fixed; top:4px; ">g4ScoreBoard v<text id="verNum"></text></text>
+</div>
+<script src="./common/js/control_panel.js"></script>
+
+<script>
+	//////////////////// HotKey scripts
+
+	//Reload the hotjeys.js file updated by the LUA script
+	function updateHotkeys() {
+	    var src;
+
+	    src = 'hotkeys.js';
+	    $('script[src="' + src + '"]').remove();
+
+	    var head= document.getElementsByTagName('head')[0];
+	    var script= document.createElement('script');
+	    script.src = src;
+	    head.appendChild(script);
+	}
+
+	//Toggle the switches if a hotkey is pressed
+	function checkHotkeys () {
+		if (hotkeyP1ScoreUp != hotkeyP1ScoreUpOld){	postScore('add','1'); hotkeyP1ScoreUpOld = hotkeyP1ScoreUp; }
+		if (hotkeyP2ScoreUp != hotkeyP2ScoreUpOld){	postScore('add','2');	hotkeyP2ScoreUpOld = hotkeyP2ScoreUp; }
+		if (hotkeyP1ScoreDown != hotkeyP1ScoreDownOld){	postScore('sub','1'); hotkeyP1ScoreDownOld = hotkeyP1ScoreDown; }
+		if (hotkeyP2ScoreDown != hotkeyP2ScoreDownOld){	postScore('sub','2'); hotkeyP2ScoreDownOld = hotkeyP2ScoreDown; }
+		if (hotkeySwap != hotkeySwapOld){ swapColors(); hotkeySwapOld = hotkeySwap;	}
+	}
+
+        function playerToggle() {
+	   var p2Enabled = document.getElementById("p2Enabled");
+           var p2Name = document.getElementById("p2Name");
+
+           p2Name.disabled = !p2Enabled.checked;
+        }
+
+	function refreshData() {
+		var x;
+
+		x = 0.05; // Refresh time multiplier
+		checkHotkeys();
+		updateHotkeys();
+		setTimeout(refreshData, x*1000);
+	}
+
+	//////////////////// end of HotKey scripts
+	refreshData();
+</script>
+
+</body>
+</html>
