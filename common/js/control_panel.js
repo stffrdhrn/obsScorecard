@@ -65,23 +65,30 @@
 			var p2original = "white";
 		}
 		setTimeout( function()  {
-                    bc.postMessage({player:'1',color:p2original});
-                    bc.postMessage({player:'2',color:p1original});
+		    p1Color = p2original;
+		    p2Color = p1original;
 
                     localStorage.setItem('p1colorSet', p2original);
                     localStorage.setItem('p2colorSet', p1original);
 
-		    setSelectColor("p2colorDiv", p1original);
 		    setSelectColor("p1colorDiv", p2original);
-
+		    setSelectColor("p2colorDiv", p1original);
+		    postStaticScoreCard();
 		} , 100);
 	}
 
 	function playerColorChange(player) {
 	    const cvalue  = document.getElementById("p"+player+"colorDiv").value;
-	    bc.postMessage({player:player,color:cvalue});
-	    localStorage.setItem("p1colorSet", cvalue);
-	    setSelectColor("p1colorDiv", cvalue);
+	    if (player == 1) {
+	       p1Color = cvalue;
+	       localStorage.setItem("p1colorSet", cvalue);
+	       setSelectColor("p1colorDiv", cvalue);
+	    } else {
+	       p2Color = cvalue;
+	       localStorage.setItem("p2colorSet", cvalue);
+	       setSelectColor("p2colorDiv", cvalue);
+	    }
+            postStaticScoreCard();
 	}
 
 	function postNames() {
@@ -125,8 +132,8 @@
 
 	function postStaticScoreCard() {
 		bc.postMessage({
-				players: [ {player: 1, name: p1Name, enabled: true },
-					   {player: 2, name: p2Name, enabled: p2Enabled} ],
+				players: [ {player: 1, name: p1Name, color: p1Color, enabled: true },
+					   {player: 2, name: p2Name, color: p2Color, enabled: p2Enabled} ],
 				scoreCardHoles: scoreCardHoles, scoreCardPar: scoreCardPar });
 		let front9 = 0;
 		let back9 = 0;
@@ -414,6 +421,8 @@
 	var scoreCardHoles = 18;
 	var p1Name = "";
 	var p2Name = "";
+	var p1Color = "";
+	var p2Color = "";
 	var p2Enabled = false;
 	var scoreCardPar = [];
         var currentHole = 1;

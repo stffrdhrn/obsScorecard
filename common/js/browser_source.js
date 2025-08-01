@@ -43,11 +43,11 @@ function setScores(scores) {
     renderScoreCard();
 }
 
-function setPlayerName(player, playerName, playerEnabled) {
+function setPlayerName(idx, playerName, playerColor, playerEnabled) {
     if (playerEnabled) {
-	staticScoreCard.players[Number(player) - 1] = { name: playerName };
+	staticScoreCard.players[idx] = { name: playerName, color: playerColor };
     } else {
-	staticScoreCard.players.splice(Number(player) - 1, 1);
+	staticScoreCard.players.splice(idx, 1);
     }
 }
 
@@ -121,6 +121,10 @@ function setOpacity(n) {
 	document.querySelectorAll(".scData > td").forEach((el) => {
 		el.style.background = 'rgb(120 120 120 / ' + (100*Number(n)) + '%)';
 	});
+	document.querySelectorAll(".scData > td.scName").forEach((el, i) => {
+		el.style.background = 'linear-gradient(to left, rgb(120 120 120 / ' + (100*Number(n)) + '%), ' +
+					staticScoreCard.players[i].color + ")";
+	});
 	document.querySelectorAll(".scSubHeader > td").forEach((el) => {
 		el.style.background = 'rgb(80 80 80 / ' + (100*Number(n)) + '%)';
 	});
@@ -136,7 +140,7 @@ const bc = new BroadcastChannel('g4-main');
 
 var staticScoreCard = {
    players: [
-     { name: "Player 1" }
+     { name: "Player 1", color: "" }
    ],
    holes: 18,
    par: [],
@@ -162,18 +166,13 @@ bc.onmessage = (event) => {
 		setOpacity(event.data.opacity);
 	}
 
-	if (event.data.color != null) {
-		console.log("event.data.player: " + event.data.player + " event.data.color: " + event.data.color);
-                document.getElementById("player" + event.data.player + "Name").style.background = "linear-gradient(to left, white , " + event.data.color; + ")";
-	}
-
 	if (event.data.players != null) {
-		event.data.players.forEach((player) => {
-			console.log("player: " + player.player + " name: " + player.name);
+		event.data.players.forEach((player, i) => {
+			console.log("player: " + (i+1) + " name: " + player.name);
 			if (!event.data.name == "") {
-				setPlayerName(player.player, player.name, player.enabled);
+				setPlayerName(i, player.name, player.color, player.enabled);
 			} else {
-				setPlayerName(player.player, "Player " + player.player, player.enabled);
+				setPlayerName(i, "Player " + (i+1), player.color, player.enabled);
 			}
 		});
 		setStaticScoreCard(event.data.scoreCardHoles, event.data.scoreCardPar);
@@ -196,37 +195,33 @@ bc.onmessage = (event) => {
 //							autostart stuff
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-if (localStorage.getItem("p1NameCtrlPanel") != null) {
-	staticScoreCard.players[0].name = localStorage.getItem("p1NameCtrlPanel");
+function loadStaticScoreCard() {
+    if (localStorage.getItem("p1NameCtrlPanel") != null) {
+	    staticScoreCard.players[0].name = localStorage.getItem("p1NameCtrlPanel");
+	    staticScoreCard.players[0].color = localStorage.getItem("p1colorSet");
+    }
+
+    if (localStorage.getItem("p2NameCtrlPanel") != null && localStorage.getItem("p2Enabled") === "y") {
+	    staticScoreCard.players[1] = {};
+	    staticScoreCard.players[1].name = localStorage.getItem("p2NameCtrlPanel");
+	    staticScoreCard.players[1].color = localStorage.getItem("p2colorSet");
+    }
+    const storedScoreCardPar = localStorage.getItem("scoreCardPar");
+    if (storedScoreCardPar != null) {
+	    staticScoreCard.par = storedScoreCardPar.split(",");
+    }
+    const p1ScoreCard = localStorage.getItem("p1ScoreCard");
+    if (p1ScoreCard != null) {
+	    scoreCard.players[0].scores = p1ScoreCard.split(",");
+    }
+    const p2ScoreCard = localStorage.getItem("p2ScoreCard");
+    if (p2ScoreCard != null) {
+	    scoreCard.players[1].scores = p2ScoreCard.split(",");
+    }
 }
 
-if (localStorage.getItem("p2NameCtrlPanel") != null && localStorage.getItem("p2Enabled") === "y") {
-	staticScoreCard.players[1] = {};
-	staticScoreCard.players[1].name = localStorage.getItem("p2NameCtrlPanel");
-}
-let storedScoreCardPar = localStorage.getItem("scoreCardPar");
-if (storedScoreCardPar != null) {
-	staticScoreCard.par = storedScoreCardPar.split(",");
-}
-let p1ScoreCard = localStorage.getItem("p1ScoreCard");
-if (p1ScoreCard != null) {
-	scoreCard.players[0].scores = p1ScoreCard.split(",");
-}
-let p2ScoreCard = localStorage.getItem("p2ScoreCard");
-if (p2ScoreCard != null) {
-	scoreCard.players[1].scores = p2ScoreCard.split(",");
-}
+loadStaticScoreCard();
 
-/*
-if (localStorage.getItem('p1colorSet') != "") {
-	document.getElementById("player1Name").style.background = "linear-gradient(to left, white , " + localStorage.getItem('p1colorSet');
-	console.log("p1color: " + localStorage.getItem('p1colorSet'));
-}
-if (localStorage.getItem('p2colorSet') != "") {
-	document.getElementById("player2Name").style.background = "linear-gradient(to left, white , " + localStorage.getItem('p2colorSet');
-	console.log("p2color: " + localStorage.getItem('p2colorSet'));
-}
-*/
 if (localStorage.getItem("b_style") != null) {
 	styleChange(localStorage.getItem("b_style"));
 } else {
@@ -234,6 +229,8 @@ if (localStorage.getItem("b_style") != null) {
 }
 if (localStorage.getItem("opacity") > 0) {
 	staticScoreCard.opacity = localStorage.getItem("opacity") / 100;
-	setOpacity(staticScoreCard.opacity);
 }
 renderScoreCard();
+
+
+
