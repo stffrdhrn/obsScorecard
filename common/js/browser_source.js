@@ -4,8 +4,6 @@
 //  https://g4billiards.com http://www.g4creations.com
 //  this is a purely javascript/html/css driven scoreboard system for OBS Studio
 //  free to use and modify and use as long as this copyright statment remains intact.
-//  Salotto logo is the copyright of Salotto and is used with their permission.
-//  for more information about Salotto please visit https://salotto.app
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////            
@@ -135,8 +133,7 @@ function setOpacity(n) {
 //										variable declarations
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////			
 
-const bcr = new BroadcastChannel('g4-recv'); // browser_source -> control_panel channel
-const bc = new BroadcastChannel('g4-main');
+const bc = new BroadcastChannel('sc-main');
 
 var staticScoreCard = {
    players: [
@@ -163,13 +160,14 @@ bc.onmessage = (event) => {
 
 	if (event.data.opacity != null) {
 		console.log("event.data(opacity): " + event.data.opacity);
-		setOpacity(event.data.opacity);
+		staticScoreCard.opacity = event.data.opacity;
+		setOpacity(staticScoreCard.opacity);
 	}
 
 	if (event.data.players != null) {
 		event.data.players.forEach((player, i) => {
 			console.log("player: " + (i+1) + " name: " + player.name);
-			if (!event.data.name == "") {
+			if (!player.name == "") {
 				setPlayerName(i, player.name, player.color, player.enabled);
 			} else {
 				setPlayerName(i, "Player " + (i+1), player.color, player.enabled);
@@ -195,42 +193,40 @@ bc.onmessage = (event) => {
 //							autostart stuff
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function loadStaticScoreCard() {
-    if (localStorage.getItem("p1NameCtrlPanel") != null) {
-	    staticScoreCard.players[0].name = localStorage.getItem("p1NameCtrlPanel");
-	    staticScoreCard.players[0].color = localStorage.getItem("p1colorSet");
-    }
+(() => {
+	/* Load Satic Score Card Data */
+	if (localStorage.getItem("p1NameCtrlPanel") != null) {
+		staticScoreCard.players[0].name = localStorage.getItem("p1NameCtrlPanel");
+		staticScoreCard.players[0].color = localStorage.getItem("p1colorSet");
+	}
+	if (localStorage.getItem("p2NameCtrlPanel") != null && localStorage.getItem("p2Enabled") === "y") {
+		staticScoreCard.players[1] = {};
+		staticScoreCard.players[1].name = localStorage.getItem("p2NameCtrlPanel");
+		staticScoreCard.players[1].color = localStorage.getItem("p2colorSet");
+	}
+	const storedScoreCardPar = localStorage.getItem("scoreCardPar");
+	if (storedScoreCardPar != null) {
+		staticScoreCard.par = storedScoreCardPar.split(",");
+	}
 
-    if (localStorage.getItem("p2NameCtrlPanel") != null && localStorage.getItem("p2Enabled") === "y") {
-	    staticScoreCard.players[1] = {};
-	    staticScoreCard.players[1].name = localStorage.getItem("p2NameCtrlPanel");
-	    staticScoreCard.players[1].color = localStorage.getItem("p2colorSet");
-    }
-    const storedScoreCardPar = localStorage.getItem("scoreCardPar");
-    if (storedScoreCardPar != null) {
-	    staticScoreCard.par = storedScoreCardPar.split(",");
-    }
-    const p1ScoreCard = localStorage.getItem("p1ScoreCard");
-    if (p1ScoreCard != null) {
-	    scoreCard.players[0].scores = p1ScoreCard.split(",");
-    }
-    const p2ScoreCard = localStorage.getItem("p2ScoreCard");
-    if (p2ScoreCard != null) {
-	    scoreCard.players[1].scores = p2ScoreCard.split(",");
-    }
-}
+	/* Load scores */
+	const p1ScoreCard = localStorage.getItem("p1ScoreCard");
+	if (p1ScoreCard != null) {
+		scoreCard.players[0].scores = p1ScoreCard.split(",");
+	}
+	const p2ScoreCard = localStorage.getItem("p2ScoreCard");
+	if (p2ScoreCard != null) {
+		scoreCard.players[1].scores = p2ScoreCard.split(",");
+	}
 
-loadStaticScoreCard();
-
-if (localStorage.getItem("b_style") != null) {
-	styleChange(localStorage.getItem("b_style"));
-} else {
-	styleChange(1);
-}
-if (localStorage.getItem("opacity") > 0) {
-	staticScoreCard.opacity = localStorage.getItem("opacity") / 100;
-}
-renderScoreCard();
-
-
-
+	/* Load Style Data */
+	if (localStorage.getItem("b_style") != null) {
+		styleChange(localStorage.getItem("b_style"));
+	} else {
+		styleChange(1);
+	}
+	if (localStorage.getItem("opacity") > 0) {
+		staticScoreCard.opacity = localStorage.getItem("opacity") / 100;
+	}
+	renderScoreCard();
+})();

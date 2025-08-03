@@ -3,10 +3,7 @@
 //  G4ScoreBoard addon for OBS version 1.6.2 Copyright 2025 Norman Gholson IV
 //  https://g4billiards.com http://www.g4creations.com
 //  this is a purely javascript/html/css driven scoreboard system for OBS Studio
-//  free to use and modify and use as long as this copyright statment remains intact. 
-//  Salotto logo is the copyright of Salotto and is used with their permission.
-//  for more information about Salotto please visit https://salotto.app
-
+//  free to use and modify and use as long as this copyright statment remains intact.
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // functions
@@ -153,9 +150,13 @@
 	function postScores() {
 		const p1Score = document.getElementById("p1Score");
 		const p2Score = document.getElementById("p2Score");
+		const p1Putts = document.getElementById("p1Putts");
+		const p2Putts = document.getElementById("p2Putts");
 
 		p1Data.scores[currentHole-1] = p1Score.value;
 		p2Data.scores[currentHole-1] = p2Score.value;
+		p1Data.putts[currentHole-1] = p1Putts.value;
+		p2Data.putts[currentHole-1] = p2Putts.value;
 
 		bc.postMessage({ scores: [ p1Data, p2Data ]});
 	}
@@ -183,6 +184,8 @@
 	function renderScoreCard() {
 		const p1Score = document.getElementById("p1Score");
 		const p2Score = document.getElementById("p2Score");
+		const p1Putts = document.getElementById("p1Putts");
+		const p2Putts = document.getElementById("p2Putts");
 		const scoreCardFmt = document.getElementById("scoreCardFmt");
 
 		if (p1Data.scores[currentHole-1] > 0) {
@@ -195,6 +198,17 @@
 		} else {
 			p2Score.value = scoreCardPar[currentHole-1];
 		}
+		if (p1Data.putts[currentHole-1] > 0) {
+			p1Putts.value = p1Data.putts[currentHole-1];
+		} else {
+			p1Putts.value = 2;
+		}
+		if (p2Data.putts[currentHole-1] > 0) {
+			p2Putts.value = p2Data.putts[currentHole-1];
+		} else {
+			p2Putts.value = 2;
+		}
+
 		document.getElementById("currentHole").innerHTML = currentHole;
 		scoreCardFmt.innerHTML =
 			  "  1 2 3 4 5 6 7 8 9  101112131415161718\n" +
@@ -258,6 +272,14 @@
 		if (p2ScoreCard != null) {
 			p2Data.scores = p2ScoreCard.split(",");
 		}
+		let p1Putts = localStorage.getItem("p1Putts");
+		if (p1Putts != null) {
+			p1Data.putts = p1Putts.split(",");
+		}
+		let p2Putts = localStorage.getItem("p2Putts");
+		if (p2Putts != null) {
+			p2Data.putts = p2Putts.split(",");
+		}
 		let storedCurrentHole = localStorage.getItem("currentHole");
 		if (storedCurrentHole != null) {
 			currentHole = Number(storedCurrentHole);
@@ -267,15 +289,20 @@
 	function storeScoreCard() {
 		localStorage.setItem("p1ScoreCard", p1Data.scores.join());
 		localStorage.setItem("p2ScoreCard", p2Data.scores.join());
+		localStorage.setItem("p1Putts", p1Data.putts.join());
+		localStorage.setItem("p2Putts", p2Data.putts.join());
 		localStorage.setItem("currentHole", currentHole);
 	}
 
 	function resetScore() {
 		if (confirm("Click OK to confirm score reset")) {
-		localStorage.setItem("p1ScoreCtrlPanel", 0);
-		localStorage.setItem("p2ScoreCtrlPanel", 0);
-		bc.postMessage({player:'1',score:'0'});
-		bc.postMessage({player:'2',score:'0'});
+		p1Data.scores.length = 0;
+		p2Data.scores.length = 0;
+		p1Data.putts.length = 0;
+		p2Data.putts.length = 0;
+		currentHole = 1;
+		storeScoreCard();
+		renderScoreCard();
 		} else { }
 	}
 
@@ -417,7 +444,7 @@
 	// variable declarations
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	const bc = new BroadcastChannel('g4-main');
+	const bc = new BroadcastChannel('sc-main');
 	var scoreCardHoles = 18;
 	var p1Name = "";
 	var p2Name = "";
