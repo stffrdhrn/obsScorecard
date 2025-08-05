@@ -163,22 +163,47 @@
 
 	function formatScoreCard(playerData) {
 		let fmt = "";
+		let girs = "";
+		let putts = "";
 		let total = 0;
+		let totalGirs = 0;
+		let totalPutts = 0;
 		for (let i = 0; i < scoreCardHoles; i++) {
 			if (i == 9) {
 				// separate 9 holes;
 				fmt += " ";
+				girs += " ";
+				putts += " ";
 			}
 			if (playerData.scores[i] > 0) {
 				fmt += playerData.scores[i];
+				putts += playerData.putts[i];
 				total += Number(playerData.scores[i]);
+				totalPutts += Number(playerData.putts[i]);
+				let girShots = scoreCardPar[i] - 2;
+				let shotsToGreen = playerData.scores[i] - playerData.putts[i];
+				if (shotsToGreen <= girShots) {
+					totalGirs++;
+					girs += "o";
+				} else {
+					girs += "x";
+				}
 			} else {
 				fmt += "-";
+				girs += "-";
+				putts += "-";
 			}
 			fmt += " ";
+			girs += " ";
+			putts += " ";
 		}
+
 		fmt += total;
-		return fmt;
+		putts += totalPutts;
+		girs += totalGirs;
+		return fmt 
+			+ "\n   p " + putts
+			+ "\n  g " + girs;
 	}
 
 	function renderScoreCard() {

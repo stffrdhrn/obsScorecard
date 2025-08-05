@@ -1,0 +1,35 @@
+<!doctype html>
+<!--
+ScoreCard addon for OBS version 1.6.1
+this is a purely javascript/html/css driven scoreboard system for OBS Studio
+free to use and modify and use as long as this copyright statment remains intact.
+
+Page to render and green-in-regulation counter
+-->
+
+<html>
+
+<head>
+	<link rel="stylesheet" href="./common/css/browser_source/main.css" />
+	<link rel="stylesheet" href="./common/css/browser_source/100.css" />
+	<link rel="stylesheet" href="./common/css/browser_source/125.css" />
+	<link rel="stylesheet" href="./common/css/browser_source/150.css" />
+	<link rel="stylesheet" href="./common/css/browser_source/200.css" />
+
+</head>
+<body>
+	<div class="scoreCard">
+	<table>
+		<tr class="scHeader">
+		  <td class="scTotal">GIR COUNT</td>
+		</tr>
+		<tr class="scData">
+		  <td id="girCount" class="scTotal">1</td>
+		</tr>
+	</table>
+	</div>
+
+	<script src="./common/js/girs.js"></script>
+</body>
+
+</html>
