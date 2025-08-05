@@ -147,6 +147,29 @@
 		document.getElementById("total").innerHTML = total > 0 ? total : "";
 	}
 
+	function addScore(player, val) {
+		const pScore = document.getElementById("p" + player + "Score");
+		if (player == '1') {
+			p1Data.scores[currentHole-1] = Number(p1Score.value) + val;
+			pScore.value = p1Data.scores[currentHole-1];
+		} else {
+			p2Data.scores[currentHole-1] = Number(p2Score.value) + val;
+			pScore.value = p2Data.scores[currentHole-1];
+		}
+	}
+
+	function addPutt(player, val) {
+		const pPutts = document.getElementById("p" + player + "Putts");
+		if (player == '1') {
+			p1Data.putts[currentHole-1] = Number(p1Putts.value) + val;
+			pPutts.value = p1Data.putts[currentHole-1];
+		} else {
+			p2Data.putts[currentHole-1] = Number(p2Putts.value) + val;
+			pPutts.value = p2Data.putts[currentHole-1];
+		}
+	}
+
+
 	function postScores() {
 		const p1Score = document.getElementById("p1Score");
 		const p2Score = document.getElementById("p2Score");

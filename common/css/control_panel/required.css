@@ -125,7 +125,7 @@ text {
 #topPlayerGameInfo {
 	min-width:85px;
 	width:295px;
-	height:78px;
+	height:85px;
 	position:relative;
 	top:33px;
 	display:block;
@@ -207,9 +207,31 @@ input {
 
 /* Note: div has boarder 5px */
 
+.btn {
+	cursor: pointer;
+}
+
+.float {
+	height: 30px;
+	width: 40px;
+	float: left;
+	padding-left: 8px;
+	padding-right: 8px;
+	margin-left: 2px;
+	margin-right: 2px;
+}
+
 .float1 {
 	float: left;
-	width: 25px;
+	width: 18px;
+	padding-left: 8px;
+	padding-right: 8px;
+	margin-left: 2px;
+	margin-right: 2px;
+}
+.float2 {
+	float: left;
+	width: 50px;
 	padding-left: 8px;
 	padding-right: 8px;
 	margin-left: 2px;
