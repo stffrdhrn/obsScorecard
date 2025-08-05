@@ -1,5 +1,6 @@
 <!doctype html>
 <!--
+  Golf scorecard for OBS based on:
   G4ScoreBoard addon for OBS version 1.6.2 Copyright 2025 Norman Gholson IV
   https://g4billiards.com http://www.g4creations.com
   this is a purely javascript/html/css driven scoreboard system for OBS Studio
@@ -38,7 +39,7 @@
 		      <td>Player/Team 2 Name:</td>
                       <td><input style="font-size:8pt; width: 120px; background:lightgrey"
 				 type="text" id="p2Name" placeholder="Player 2"></td>
-		      <td><input class="smallSize" type="checkbox"
+		      <td><input type="checkbox"
                                id="p2Enabled" onclick="playerToggle()"></td>
 		     </tr>
                    </table>
@@ -133,15 +134,25 @@
 		  </tr>
 		  <tr>
 		    <td>Score:</td>
-                    <td><input type="number" id="p1Score" placeholder="4"></td>
+                    <td>
+<!--
+		      <select class="float2 obs28">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4" default>4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		      </select>
+		     <div class="hover float1 obs28">+</div>
+		     <div class="hover float1 obs28">-</div>
+-->
+		    <input type="number" id="p1Score" placeholder="4"></td>
 		  </tr>
-       		  <tr>
-		    <td>Fairway: </td>
-		    <td><div class="hover obs28 float1">&lt;</div>
-			<div class="hover obs28 float1">Hit</div>
-			<div class="hover obs28 float1">&gt;</div>
-                    </td>
-                  </tr>
        		  <tr>
 		    <td>Putts: </td>
                     <td><input type="number" id="p1Putts" placeholder="2"></td>
@@ -162,13 +173,6 @@
 		    <td>Score:</td>
                     <td><input type="number" id="p2Score" placeholder="4"></td>
 		  </tr>
-       		  <tr>
-		    <td>Fairway: </td>
-		    <td><div class="hover obs28 float1">&lt;</div>
-			<div class="hover obs28 float1">Hit</div>
-			<div class="hover obs28 float1">&gt;</div>
-                    </td>
-                  </tr>
        		  <tr>
 		    <td>Putts: </td>
                     <td><input type="number" id="p2Putts" placeholder="4"></td>
@@ -207,7 +211,8 @@
 		<option value="rachni">rachni</option>
 	    </select>
 	</div>
-	<p style="font-size:2px">&nbsp;</p><text style="font-size:7pt; color:#818181; position:fixed; top:4px; ">g4ScoreBoard v<text id="verNum"></text></text>
+	<p style="font-size:2px">&nbsp;</p>
+        <text style="font-size:7pt; color:#818181; position:fixed; top:4px; ">Golf Scorecard v<text id="verNum"></text></text>
 </div>
 <script src="./common/js/control_panel.js"></script>
 

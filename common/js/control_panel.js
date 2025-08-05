@@ -201,9 +201,9 @@
 		fmt += total;
 		putts += totalPutts;
 		girs += totalGirs;
-		return fmt 
-			+ "\n   p " + putts
-			+ "\n  g " + girs;
+		return fmt
+			+ "\r\n  p " + putts
+			+ "\r\n  g " + girs;
 	}
 
 	function renderScoreCard() {
@@ -236,10 +236,10 @@
 
 		document.getElementById("currentHole").innerHTML = currentHole;
 		scoreCardFmt.innerHTML =
-			  "  1 2 3 4 5 6 7 8 9  101112131415161718\n" +
+ 			"    1 2 3 4 5 6 7 8 9  101112131415161718\r\n" +
 			"P1: " + formatScoreCard(p1Data);
 		if (p2Enabled) {
-			scoreCardFmt.innerHTML += "\n" +
+			scoreCardFmt.innerHTML += "\r\n" +
 				"P2: " + formatScoreCard(p2Data);
 		}
 	}
