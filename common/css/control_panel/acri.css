@@ -9,7 +9,6 @@
 		}
 	#swapBtn {
 		cursor:pointer;
-		position:relative;
 		border: 1px solid #3345a3;
 		padding-bottom:2px;
 		width:10%;
@@ -29,9 +28,9 @@
 		
 		}
 	
-	.hover {
+	.btn {
 	}
-	.hover:hover {
+	.btn:hover {
 		background:#2a3a75;
 	}
 	

@@ -26,230 +26,230 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 	</head>
 	<body>
-		<div id="mainDiv">
-		   <center><div id="topPlayerGameInfo" class="obs28">
-		   <table>
-                    <tr>
-		      <td>Player/Team 1 Name:</td>
-                      <td><input style="font-size:8pt; width: 120px; background:lightgrey"
-                                 type="text" id="p1Name" placeholder="Player 1"></td>
-                      <td>&nbsp;</td>
-		    </tr>
-                    <tr>
-		      <td>Player/Team 2 Name:</td>
-                      <td><input style="font-size:8pt; width: 120px; background:lightgrey"
-				 type="text" id="p2Name" placeholder="Player 2"></td>
-		      <td><input type="checkbox"
-                               id="p2Enabled" onclick="playerToggle()"></td>
-		     </tr>
-                   </table>
-                   <!-- Scorecard creation -->
-                   <table>
-                     <tr>
-		       <td>Front</td>
-                       <td><input type="text" id="h1" class="hole" placeholder="4"></td>
-                       <td><input type="text" id="h2" class="hole" placeholder="4"></td>
-                       <td><input type="text" id="h3" class="hole" placeholder="4"></td>
-                       <td><input type="text" id="h4" class="hole" placeholder="4"></td>
-                       <td><input type="text" id="h5" class="hole" placeholder="4"></td>
-                       <td><input type="text" id="h6" class="hole" placeholder="4"></td>
-                       <td><input type="text" id="h7" class="hole" placeholder="4"></td>
-                       <td><input type="text" id="h8" class="hole" placeholder="4"></td>
-                       <td><input type="text" id="h9" class="hole" placeholder="4"></td>
-                       <td><span id="front9"></span></td>
-                       <td>&nbsp;</td>
-		     </tr>
-                     <tr>
-		       <td>Back</td>
- 		       <td><input type="text" id="h10" class="hole" placeholder="4"></td>
-                       <td><input type="text" id="h11" class="hole" placeholder="4"></td>
-                       <td><input type="text" id="h12" class="hole" placeholder="4"></td>
-                       <td><input type="text" id="h13" class="hole" placeholder="4"></td>
-                       <td><input type="text" id="h14" class="hole" placeholder="4"></td>
-                       <td><input type="text" id="h15" class="hole" placeholder="4"></td>
-                       <td><input type="text" id="h16" class="hole" placeholder="4"></td>
-                       <td><input type="text" id="h17" class="hole" placeholder="4"></td>
-                       <td><input type="text" id="h18" class="hole" placeholder="4"></td>
-                       <td><span id="back9"></span></td>
-                       <td><span id="total"></span></td>
-                     </tr>
-                   </table>
-		    <p style="font-size:1.5pt">&nbsp;</p>
-		    <div class="hover obs28" id="sendPNames" onclick="postNames()">Update Info</div>
-		    <p style="font-size:1.5pt">&nbsp;</p>
-			<select style="text-align:justify"
-				id="p1colorDiv"
-				class="obs28" onchange="playerColorChange(1)">
-			    <option value="" default>P1 Color</option>
-			    <option value="grey">Grey</option>
-			    <option value="steelblue">SteelBlue</option>
-			    <option value="cadetblue">CadetBlue</option>
-			    <option value="blue">Blue</option>
-			    <option value="tomato">Tomato</option>
-			    <option value="red">Red</option>
-			    <option value="orangered">OrangeRed</option>
-			    <option value="orange">Orange</option>
-			    <option value="khaki">Khaki</option>
-			    <option value="green">Green</option>
-			    <option value="lightgreen">lightGreen</option>
-			    <option value="lightseagreen">SeaGreen</option>
-			    <option value="purple">Purple</option>
-			    <option value="white">White</option>
-			</select>
-			<select style="text-align:justify"
-			        id="p2colorDiv"
-				class="obs28" onchange="playerColorChange(2)">
-			    <option value="" default>P2 Color</option>
-			    <option value="grey">Grey</option>
-			    <option value="steelblue">SteelBlue</option>
-			    <option value="cadetblue">CadetBlue</option>
-			    <option value="blue">Blue</option>
-			    <option value="tomato">Tomato</option>
-			    <option value="red">Red</option>
-			    <option value="orangered">OrangeRed</option>
-			    <option value="orange">Orange</option>
-			    <option value="khaki">Khaki</option>
-			    <option value="green">Green</option>
-			    <option value="lightgreen">lightGreen</option>
-			    <option value="lightseagreen">SeaGreen</option>
-			    <option value="purple">Purple</option>
-			    <option value="white">White</option>
-			</select>
-		<div class="hover obs28" onclick="swapColors()" id="swapBtn"><text style="font-size:2pt">&nbsp;</text>Swap</div>
-		<hr>
-		<div class="float4">Hole: </div>
-		<div id="currentHole" class="float4">1</div>
-		<p style="font-size:9.5pt">&nbsp;</p>
-		<pre id="scoreCardFmt">
- P1: - - - - - - - - -  - - - - - - - - - --
- P2: - - - - - - - - -  - - - - - - - - - --
-		</pre>
-		<hr>
-		<div class="ctl-group">
-		<table class="playerData">
-		  <tr>
-		    <td colspan="2">
-		      <div id="p1ScoreLabel">Player 1 Stats</div>
-		    </td>
-		  </tr>
-		  <tr>
-		    <td>Score:</td>
-                    <td>
-		      <select id="p1Score" class="hover float obs28">
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4" default>4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-			<option value="7">7</option>
-			<option value="8">8</option>
-			<option value="9">9</option>
-			<option value="10">10</option>
-			<option value="11">11</option>
-			<option value="12">12</option>
-		      </select>
-		     <div class="hover btn float1 obs28" onclick="addScore('1', 1)">+</div>
-		     <div class="hover btn float1 obs28" onclick="addScore('1', -1)">-</div>
-		    </td>
-		  </tr>
-       		  <tr>
-		    <td>Putts: </td>
-		    <td>
-		      <select id="p1Putts" class="hover float obs28">
-			<option value="0">0</option>
-			<option value="1">1</option>
-			<option value="2" default>2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-		      </select>
-		     <div class="hover btn float1 obs28" onclick="addPutt('1', 1)">+</div>
-		     <div class="hover btn float1 obs28" onclick="addPutt('1', -1)">-</div>
-		   </td>
-                  </tr>
-		</table>
-		</div>
+	  <div id="mainDiv" class="vertical">
+            <text style="font-size:7pt; color:#818181">Golf Scorecard v<text id="verNum"></text></text>
+	    <div class="horizontal">
+	      <div class="themeSizeLabels" id="obsThemeLabel">Board size:
+		<select class="obs28" name="bsstyle" id="bsStyle" onchange="bsStyleChange()">
+		    <option value="1">small</option>
+		    <option value="2" selected>medium</option>
+		    <option value="3">large</option>
+		    <option value="4">XL</option>
+		</select>
+	      </div>
+	      <div class="themeSizeLabels" id="obsThemeDiv">Control theme:
+		<select class="obs28" name="Theme" id="obsTheme" onchange="obsThemeChange()">
+		    <option value="27" selected>dark</option>
+		    <option value="28">yami</option>
+		    <option value="acri">acri</option>
+		    <option value="grey">grey</option>
+		    <option value="light">light</option>
+		    <option value="rachni">rachni</option>
+		</select>
+	      </div>
+	    </div>
 
-		<div class="ctl-group" id="player2DataGroup">
-		<table class="playerData">
-		  <tr>
-		    <td colspan="2">
-		      <div id="p2ScoreLabel">Player 2 Stats</div>
-		    </td>
-		  </tr>
-		  <tr>
-		    <td>Score:</td>
-                    <td>
-		      <select id="p2Score" class="hover float obs28">
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4" default>4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-			<option value="7">7</option>
-			<option value="8">8</option>
-			<option value="9">9</option>
-			<option value="10">10</option>
-			<option value="11">11</option>
-			<option value="12">12</option>
-		      </select>
-		     <div class="hover btn float1 obs28" onclick="addScore('2', 1)">+</div>
-		     <div class="hover btn float1 obs28" onclick="addScore('2', -1)">-</div>
-		    </td>
-		  </tr>
-       		  <tr>
-		    <td>Putts: </td>
-		    <td>
-		      <select id="p2Putts" class="hover float obs28">
-			<option value="0">0</option>
-			<option value="1">1</option>
-			<option value="2" default>2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-		      </select>
-		     <div class="hover btn float1 obs28" onclick="addPutt('2', 1)">+</div>
-		     <div class="hover btn float1 obs28" onclick="addPutt('2', -1)">-</div>
-		   </td>
-                  </tr>
-		</table>
-		</div>
+	    <div id="topPlayerGameInfo" class="vertical obs28">
+	      <table>
+		<tr>
+		  <td>Player/Team 1 Name:</td>
+		  <td><input type="text" id="p1Name" placeholder="Player 1"></td>
+		  <td>&nbsp;</td>
+		</tr>
+		<tr>
+		  <td>Player/Team 2 Name:</td>
+		  <td><input type="text" id="p2Name" placeholder="Player 2"></td>
+		  <td><input type="checkbox"
+			   id="p2Enabled" onclick="playerToggle()"></td>
+		 </tr>
+               </table>
+	       <!-- Scorecard creation -->
+	       <table>
+		 <tr>
+		   <td>Front</td>
+		   <td><input type="text" id="h1" class="hole" placeholder="4"></td>
+		   <td><input type="text" id="h2" class="hole" placeholder="4"></td>
+		   <td><input type="text" id="h3" class="hole" placeholder="4"></td>
+		   <td><input type="text" id="h4" class="hole" placeholder="4"></td>
+		   <td><input type="text" id="h5" class="hole" placeholder="4"></td>
+		   <td><input type="text" id="h6" class="hole" placeholder="4"></td>
+		   <td><input type="text" id="h7" class="hole" placeholder="4"></td>
+		   <td><input type="text" id="h8" class="hole" placeholder="4"></td>
+		   <td><input type="text" id="h9" class="hole" placeholder="4"></td>
+		   <td><span id="front9"></span></td>
+		   <td>&nbsp;</td>
+		 </tr>
+		 <tr>
+		   <td>Back</td>
+		   <td><input type="text" id="h10" class="hole" placeholder="4"></td>
+		   <td><input type="text" id="h11" class="hole" placeholder="4"></td>
+		   <td><input type="text" id="h12" class="hole" placeholder="4"></td>
+		   <td><input type="text" id="h13" class="hole" placeholder="4"></td>
+		   <td><input type="text" id="h14" class="hole" placeholder="4"></td>
+		   <td><input type="text" id="h15" class="hole" placeholder="4"></td>
+		   <td><input type="text" id="h16" class="hole" placeholder="4"></td>
+		   <td><input type="text" id="h17" class="hole" placeholder="4"></td>
+		   <td><input type="text" id="h18" class="hole" placeholder="4"></td>
+		   <td><span id="back9"></span></td>
+		   <td><span id="total"></span></td>
+		 </tr>
+	       </table>
+	     </div> <!-- topPlayerGameInfo -->
 
-		<div class="hover obs28 float4" onclick="prevHole()" >&lt; Prev</div>
-		<div class="hover obs28 float4" onclick="nextHole()">Next &gt;</div>
+	     <div class="btn obs28" id="sendPNames" onclick="postNames()">Update Info</div>
 
-		<p style="font-size:8.25pt">&nbsp;</p><hr>
+	     <div class="horizontal">
+		<select style="text-align:justify"
+			id="p1colorDiv"
+			class="obs28" onchange="playerColorChange(1)">
+		    <option value="" default>P1 Color</option>
+		    <option value="grey">Grey</option>
+		    <option value="steelblue">SteelBlue</option>
+		    <option value="cadetblue">CadetBlue</option>
+		    <option value="blue">Blue</option>
+		    <option value="tomato">Tomato</option>
+		    <option value="red">Red</option>
+		    <option value="orangered">OrangeRed</option>
+		    <option value="orange">Orange</option>
+		    <option value="khaki">Khaki</option>
+		    <option value="green">Green</option>
+		    <option value="lightgreen">lightGreen</option>
+		    <option value="lightseagreen">SeaGreen</option>
+		    <option value="purple">Purple</option>
+		    <option value="white">White</option>
+		</select>
+	        <div class="btn obs28" onclick="swapColors()" id="swapBtn">Swap</div>
+		<select style="text-align:justify"
+			id="p2colorDiv"
+			class="obs28" onchange="playerColorChange(2)">
+		    <option value="" default>P2 Color</option>
+		    <option value="grey">Grey</option>
+		    <option value="steelblue">SteelBlue</option>
+		    <option value="cadetblue">CadetBlue</option>
+		    <option value="blue">Blue</option>
+		    <option value="tomato">Tomato</option>
+		    <option value="red">Red</option>
+		    <option value="orangered">OrangeRed</option>
+		    <option value="orange">Orange</option>
+		    <option value="khaki">Khaki</option>
+		    <option value="green">Green</option>
+		    <option value="lightgreen">lightGreen</option>
+		    <option value="lightseagreen">SeaGreen</option>
+		    <option value="purple">Purple</option>
+		    <option value="white">White</option>
+		</select>
+	    </div>
+	    <div class="horizontal">
+	      <div class="float4">Hole: </div>
+	      <div id="currentHole" class="float4">1</div>
+	    </div>
+	    <pre id="scoreCardFmt">
+P1: - - - - - - - - -  - - - - - - - - - --
+P2: - - - - - - - - -  - - - - - - - - - --
+	    </pre>
+	    <div class="vertical">
+	    <div id="p1ScoreLabel" class="">Player 1 Stats</div>
+	    <table class="playerData">
+	      <tr>
+		<td>Score:</td>
+		<td>
+		  <div class="horizontal">
+		  <select id="p1Score" class="float obs28">
+		    <option value="1">1</option>
+		    <option value="2">2</option>
+		    <option value="3">3</option>
+		    <option value="4" default>4</option>
+		    <option value="5">5</option>
+		    <option value="6">6</option>
+		    <option value="7">7</option>
+		    <option value="8">8</option>
+		    <option value="9">9</option>
+		    <option value="10">10</option>
+		    <option value="11">11</option>
+		    <option value="12">12</option>
+		  </select>
+		 <div class="btn float1 obs28" onclick="addScore('1', 1)">+</div>
+		 <div class="btn float1 obs28" onclick="addScore('1', -1)">-</div>
+		 </div>
+		</td>
+	      </tr>
+	      <tr>
+		<td>Putts: </td>
+		<td>
+		  <div class="horizontal">
+		  <select id="p1Putts" class="float obs28">
+		    <option value="0">0</option>
+		    <option value="1">1</option>
+		    <option value="2" default>2</option>
+		    <option value="3">3</option>
+		    <option value="4">4</option>
+		    <option value="5">5</option>
+		    <option value="6">6</option>
+		  </select>
+		 <div class="btn float1 obs28" onclick="addPutt('1', 1)">+</div>
+		 <div class="btn float1 obs28" onclick="addPutt('1', -1)">-</div>
+		 </div>
+	       </td>
+	      </tr>
+	    </table>
+	    </div>
 
-		<div class="hover obs28" id="resetBtn" onclick="resetScore()">Reset Scores and Extensions</div><p style="font-size:1.5pt">&nbsp;</p>
-		<div class="slidecontainer">
-			<input type="range" min="0" max="100" value="100" class="slider" id="scoreOpacity">
-		</div></center>
-	<div class="themeSizeLabels" id="obsThemeLabel">Board size:
-	    <select class="obs28" name="bsstyle" id="bsStyle" onchange="bsStyleChange()">
-		<option value="1">small</option>
-		<option value="2" selected>medium</option>
-		<option value="3">large</option>
-		<option value="4">XL</option>
-	    </select>
-	</div>
-	<div class="themeSizeLabels" id="obsThemeDiv">Control theme:
-            <p style="font-size:1px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	    <div class="vertical" id="player2DataGroup">
+	    <div id="p2ScoreLabel">Player 2 Stats</div>
+	    <table class="playerData">
+	      <tr>
+		<td>Score:</td>
+		<td>
+		  <div class="horizontal">
+		  <select id="p2Score" class="float obs28">
+		    <option value="1">1</option>
+		    <option value="2">2</option>
+		    <option value="3">3</option>
+		    <option value="4" default>4</option>
+		    <option value="5">5</option>
+		    <option value="6">6</option>
+		    <option value="7">7</option>
+		    <option value="8">8</option>
+		    <option value="9">9</option>
+		    <option value="10">10</option>
+		    <option value="11">11</option>
+		    <option value="12">12</option>
+		  </select>
+		 <div class="btn float1 obs28" onclick="addScore('2', 1)">+</div>
+		 <div class="btn float1 obs28" onclick="addScore('2', -1)">-</div>
+		 </div>
+		</td>
+	      </tr>
+	      <tr>
+		<td>Putts: </td>
+		<td>
+		  <div class="horizontal">
+		  <select id="p2Putts" class="float obs28">
+		    <option value="0">0</option>
+		    <option value="1">1</option>
+		    <option value="2" default>2</option>
+		    <option value="3">3</option>
+		    <option value="4">4</option>
+		    <option value="5">5</option>
+		    <option value="6">6</option>
+		  </select>
+		 <div class="btn float1 obs28" onclick="addPutt('2', 1)">+</div>
+		 <div class="btn float1 obs28" onclick="addPutt('2', -1)">-</div>
+		 </div>
+	       </td>
+	      </tr>
+	    </table>
+	    </div>
 
-	    <select class="obs28" name="Theme" id="obsTheme" onchange="obsThemeChange()">
-           	<option value="27" selected>dark</option>
-            	<option value="28">yami</option>
-		<option value="acri">acri</option>
-		<option value="grey">grey</option>
-		<option value="light">light</option>
-		<option value="rachni">rachni</option>
-	    </select>
-	</div>
-        <text style="font-size:7pt; color:#818181; position:fixed; top:4px; ">Golf Scorecard v<text id="verNum"></text></text>
-</div>
+	    <div class="horizontal">
+		<div class="btn obs28 float4" onclick="prevHole()" >&larr; Prev</div>
+		<div class="btn obs28 float4" onclick="nextHole()">Next &rarr;</div>
+	    </div>
+	    <div class="btn obs28" id="resetBtn" onclick="resetScore()">Reset Scores</div>
+	    <div class="slidecontainer">
+		<input type="range" min="0" max="100" value="100" class="slider" id="scoreOpacity">
+	    </div>
+	</div> <!-- mainDiv -->
 <script src="./common/js/control_panel.js"></script>
 
 <script>

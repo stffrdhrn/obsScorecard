@@ -9,7 +9,6 @@
 		}
 	#swapBtn {
 		cursor:pointer;
-		position:relative;
 		border: 1px solid steelblue;
 		padding-bottom:2px;
 		width:10%;
@@ -20,25 +19,20 @@
 	#mainDiv {
 		background: #2b2e38;
 		}
-	
+
 	hr {
 		border-bottom:0px;
 		border-top: 1px solid steelblue;
 		border-left: 0px;
 		border-right: 0px;
-		
-		}
-	
-	.hover {
 	}
-	.hover:hover {
+
+	.btn {
+	}
+	.btn:hover {
 		background:#4f535e;
 	}
-	
-	
-	.clkd {
-		color: dimgrey;
-	}
+
 	.themeSizeLabels{
 		color:lightgrey;
 	}
@@ -54,8 +48,3 @@
 	  -webkit-transition: .2s;
 	  transition: opacity .2s;
 	}
-	
-		
-		
-		
-		
