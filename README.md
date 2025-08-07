@@ -5,7 +5,6 @@ https://g4billiards.com http://www.g4creations.com
 
 this is a purely javascript/html/css driven golf scorecard system for OBS Studio
 
-```
 -------------------------------------------------------------
 
 ## Extract zip file to the folder of your choice.<br>
