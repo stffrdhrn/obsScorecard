@@ -94,3 +94,12 @@ To install Hotkeys:
 
 --------------------------------------------------------------
 
+## Examples
+
+Single player mode, tracks current score and can render and GIR and 3PUTT counter.
+
+![single player widgets](images/single-player.png)
+
+If you enable the second player you can track another score.
+
+![multi player widgets](images/multi-player.png)

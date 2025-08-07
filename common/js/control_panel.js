@@ -288,6 +288,22 @@
 		renderScoreCard();
 	}
 
+	function clearCurrentHole() {
+		const p1Score = document.getElementById("p1Score");
+		const p2Score = document.getElementById("p2Score");
+		const p1Putts = document.getElementById("p1Putts");
+		const p2Putts = document.getElementById("p2Putts");
+
+		p1Score.value = 0;
+		p2Score.value = 0;
+		p1Putts.value = 0;
+		p2Putts.value = 0;
+
+		postScores();
+		storeScoreCard();
+		renderScoreCard();
+	}
+
 	/* Read static score card from local storage */
 	function loadStaticScoreCard() {
 		let storedScoreCardPar = localStorage.getItem("scoreCardPar");

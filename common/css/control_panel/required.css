@@ -73,12 +73,6 @@ text {
 	font-size:8pt;
 }
 
-#resetBtn, #sendPNames {
-	cursor: pointer;
-	width: 268px;
-	font-size: 9pt;
-}
-
 .noShow {
 	visibility:hidden;
 }
@@ -186,8 +180,10 @@ input {
 	width: 50px;
 }
 .float4 {
-	width: 120px;
-	text-align:center;
+	width: 128px;
+}
+.float8 {
+	width: 272px;
 }
 
 .playerData td {

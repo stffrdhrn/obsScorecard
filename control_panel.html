@@ -96,7 +96,7 @@
 	       </table>
 	     </div> <!-- topPlayerGameInfo -->
 
-	     <div class="btn obs28" id="sendPNames" onclick="postNames()">Update Info</div>
+	     <div class="btn obs28 float8" onclick="postNames()">Update Info</div>
 
 	     <div class="horizontal">
 		<select style="text-align:justify"
@@ -248,8 +248,10 @@ P2: - - - - - - - - -  - - - - - - - - - --
 		<div class="btn obs28 float4" onclick="prevHole()" >&larr; Prev</div>
 		<div class="btn obs28 float4" onclick="nextHole()">Next &rarr;</div>
 	    </div>
-	    <div class="btn obs28" id="resetBtn" onclick="resetScore()">Reset Scores</div>
-	    <div class="slidecontainer">
+	    <div class="btn obs28 float8" onclick="clearCurrentHole()">Reset Current Hole</div>
+	    <div class="btn obs28 float8" onclick="resetScore()">Reset All Scores</div>
+	    <div class="slidecontainer horizontal">
+	        <div class="float4">Opacity: </div>
 		<input type="range" min="0" max="100" value="100" class="slider" id="scoreOpacity">
 	    </div>
 	</div> <!-- mainDiv -->
