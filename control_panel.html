@@ -155,6 +155,7 @@ P2: - - - - - - - - -  - - - - - - - - - --
 		<td>
 		  <div class="horizontal">
 		  <select id="p1Score" class="float obs28">
+		    <option value="0">-</option>
 		    <option value="1">1</option>
 		    <option value="2">2</option>
 		    <option value="3">3</option>
@@ -202,6 +203,8 @@ P2: - - - - - - - - -  - - - - - - - - - --
 		<td>
 		  <div class="horizontal">
 		  <select id="p2Score" class="float obs28">
+		    <option value="0">-</option>
+		    <option value="1">1</option>
 		    <option value="1">1</option>
 		    <option value="2">2</option>
 		    <option value="3">3</option>
@@ -270,11 +273,12 @@ P2: - - - - - - - - -  - - - - - - - - - --
 
 	//Toggle the switches if a hotkey is pressed
 	function checkHotkeys () {
-		if (hotkeyP1ScoreUp != hotkeyP1ScoreUpOld){	postScore('add','1'); hotkeyP1ScoreUpOld = hotkeyP1ScoreUp; }
-		if (hotkeyP2ScoreUp != hotkeyP2ScoreUpOld){	postScore('add','2');	hotkeyP2ScoreUpOld = hotkeyP2ScoreUp; }
-		if (hotkeyP1ScoreDown != hotkeyP1ScoreDownOld){	postScore('sub','1'); hotkeyP1ScoreDownOld = hotkeyP1ScoreDown; }
-		if (hotkeyP2ScoreDown != hotkeyP2ScoreDownOld){	postScore('sub','2'); hotkeyP2ScoreDownOld = hotkeyP2ScoreDown; }
-		if (hotkeySwap != hotkeySwapOld){ swapColors(); hotkeySwapOld = hotkeySwap;	}
+		if (hotkeyP1ScoreUp != hotkeyP1ScoreUpOld){	addScore('1',1);  hotkeyP1ScoreUpOld = hotkeyP1ScoreUp; }
+		if (hotkeyP1ScoreDown != hotkeyP1ScoreDownOld){	addScore('1',-1); hotkeyP1ScoreDownOld = hotkeyP1ScoreDown; }
+		if (hotkeyP2ScoreUp != hotkeyP2ScoreUpOld){	addScore('2',1);  hotkeyP2ScoreUpOld = hotkeyP2ScoreUp; }
+		if (hotkeyP2ScoreDown != hotkeyP2ScoreDownOld){	addScore('2',-1); hotkeyP2ScoreDownOld = hotkeyP2ScoreDown; }
+		if (hotkeyNextHole != hotkeyNextHoleOld){ 	nextHole();       hotkeyNextHoleOld = hotkeyNextHole; }
+		if (hotkeySwap != hotkeySwapOld){		swapColors();     hotkeySwapOld = hotkeySwap;	}
 	}
 
         function playerToggle() {

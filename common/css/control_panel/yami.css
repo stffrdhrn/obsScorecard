@@ -18,7 +18,8 @@
 	}
 	#mainDiv {
 		background: #2b2e38;
-		}
+		color: lightgrey;
+	}
 
 	hr {
 		border-bottom:0px;
@@ -36,7 +37,6 @@
 	.themeSizeLabels{
 		color:lightgrey;
 	}
-		
 	.slider {
 	  -webkit-appearance: none;
 	  width: 100%;

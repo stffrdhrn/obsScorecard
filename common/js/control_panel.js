@@ -521,6 +521,7 @@
 	var hotkeyP2ScoreUpOld = hotkeyP2ScoreUp;
 	var hotkeyP1ScoreDownOld = hotkeyP1ScoreDown;
 	var hotkeyP2ScoreDownOld = hotkeyP2ScoreDown;
+	var hotkeyNextHoleOld = hotkeyNextHole;
 	var hotkeySwapOld = hotkeySwap;
 	var slider = document.getElementById("scoreOpacity");
 

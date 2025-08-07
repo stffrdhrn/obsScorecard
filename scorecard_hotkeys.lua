@@ -1,5 +1,5 @@
 --[[
-      OBS Studio Lua script : Control the g4ScoreBoard with hotkeys    
+      OBS Studio Lua script : Control the golf scorecard with hotkeys
 --]]
 
 
@@ -10,28 +10,19 @@ local hotkeyP1ScoreUp = 0;
 local hotkeyP1ScoreDown = 0;
 local hotkeyP2ScoreUp = 0;
 local hotkeyP2ScoreDown = 0;
+local hotkeyNextHole = 0;
 local hotkeyScoreReset = 0;
-local hotkeyP1Extension = 0;
-local hotkeyP2Extension = 0;
-local hotkey30Clock = 0;
-local hotkey60Clock = 0;
-local hotkeyStopClock = 0;
 local hotkeySwap = 0;
 
 
 local hotkeys = {
-	P1_SCR_UP = "G4 - Player 1 Score +1",
-	P1_SCR_DOWN = "G4 - Player 1 Score -1",
-	P2_SCR_UP = "G4 - Player 2 Score +1",
-	P2_SCR_DOWN = "G4 - Player 2 Score -1",
-	SCR_RESET = "G4 - Score Reset",
-	P1_EXT = "G4 - Player 1 Extension",
-	P2_EXT = "G4 - Player 2 Extension",
-	CLOCK_30 = "G4 - 30 Second Shot Clock Start",
-	CLOCK_60 = "G4 - 60 Second Shot Clock Start",
-	STOP_CLK = "G4 - Stop Clock",
-	SWAP_CLR = "G4 - Swap Player Colors",
-		
+	P1_SCR_UP = "Golf - Player 1 Score +1",
+	P1_SCR_DOWN = "Golf - Player 1 Score -1",
+	P2_SCR_UP = "Golf - Player 2 Score +1",
+	P2_SCR_DOWN = "Golf - Player 2 Score -1",
+	SCR_RESET = "Golf - Score Reset",
+	NEXT_HOLE = "Golf - Next Hole",
+	SWAP_CLR = "Golf - Swap Player Colors",
 }
 
 -- add any custom actions here
@@ -74,39 +65,11 @@ local function onHotKey(action)
 			hotkeyScoreReset = 0
 		end
 		update_hotkeys_js()
-	elseif action == "P1_EXT" then
-		if hotkeyP1Extension == 0 then
-			hotkeyP1Extension = 1
+	elseif action == "NEXT_HOLE" then
+		if hotkeyNextHole == 0 then
+			hotkeyNextHole = 1
 		else
-			hotkeyP1Extension = 0
-		end
-		update_hotkeys_js()
-	elseif action == "P2_EXT" then
-		if hotkeyP2Extension == 0 then
-			hotkeyP2Extension = 1
-		else
-			hotkeyP2Extension = 0
-		end
-		update_hotkeys_js()
-	elseif action == "CLOCK_30" then
-		if hotkey30Clock == 0 then
-			hotkey30Clock = 1
-		else
-			hotkey30Clock = 0
-		end
-		update_hotkeys_js()
-	elseif action == "CLOCK_60" then
-		if hotkey60Clock == 0 then
-			hotkey60Clock = 1
-		else
-			hotkey60Clock = 0
-		end
-		update_hotkeys_js()
-	elseif action == "STOP_CLK" then
-		if hotkeyStopClock == 0 then
-			hotkeyStopClock = 1
-		else
-			hotkeyStopClock = 0
+			hotkeyNextHole = 0
 		end
 		update_hotkeys_js()
 	elseif action == "SWAP_CLR" then
@@ -122,17 +85,13 @@ end
 
 -- write settings to js file
 function update_hotkeys_js()
-    local output = assert(io.open(script_path() .. 'hotkeys.js', "w"))
-    output:write('hotkeyP1ScoreUp = '.. hotkeyP1ScoreUp .. ';\n')
-    output:write('hotkeyP1ScoreDown = '.. hotkeyP1ScoreDown .. ';\n')
-    output:write('hotkeyP2ScoreUp = '.. hotkeyP2ScoreUp .. ';\n')
-    output:write('hotkeyP2ScoreDown = '.. hotkeyP2ScoreDown .. ';\n')
+	local output = assert(io.open(script_path() .. 'hotkeys.js', "w"))
+	output:write('hotkeyP1ScoreUp = '.. hotkeyP1ScoreUp .. ';\n')
+	output:write('hotkeyP1ScoreDown = '.. hotkeyP1ScoreDown .. ';\n')
+	output:write('hotkeyP2ScoreUp = '.. hotkeyP2ScoreUp .. ';\n')
+	output:write('hotkeyP2ScoreDown = '.. hotkeyP2ScoreDown .. ';\n')
 	output:write('hotkeyScoreReset = '.. hotkeyScoreReset .. ';\n')
-	output:write('hotkeyP1Extension = '.. hotkeyP1Extension .. ';\n')
-	output:write('hotkeyP2Extension = '.. hotkeyP2Extension .. ';\n')
-	output:write('hotkey30Clock = '.. hotkey30Clock .. ';\n')
-	output:write('hotkey60Clock = '.. hotkey60Clock .. ';\n')
-	output:write('hotkeyStopClock = '.. hotkeyStopClock .. ';\n')
+	output:write('hotkeyNextHole = '.. hotkeyNextHole .. ';\n')
 	output:write('hotkeySwap = '.. hotkeySwap .. ';\n')
 	output:close()
 end
@@ -153,14 +112,14 @@ function script_load(settings)
 		  end
 		end
 		return iter
-	end	
+	end
 
 	for name, line in pairsByKeys(hotkeys) do
 		hk[name] = obs.obs_hotkey_register_frontend(name, line, function(pressed) if pressed then onHotKey(name) end end)
 		local hotkeyArray = obs.obs_data_get_array(settings, name)
 		obs.obs_hotkey_load(hk[name], hotkeyArray)
 		obs.obs_data_array_release(hotkeyArray)
-	end	
+	end
 	update_hotkeys_js()
 end
 
@@ -178,7 +137,7 @@ end
 
 -- return description shown to user
 function script_description()
-	return "Control the g4ScoreBoard with hotkeys"
+	return "Control the scoreboard with hotkeys"
 end
 
 

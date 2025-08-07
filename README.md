@@ -90,7 +90,7 @@ To install Hotkeys:
  4. Navigate to and select the "scorecard_hotkeys.lua" file that came with this download.
  5. Click Open.
  6. Open the "Settings" in OBS and navigate to the "Hotkeys" section.
- 7. The scoreboard hotkeys all have the "G4" prefix for easy identification.
+ 7. The scoreboard hotkeys all have the "Golf" prefix for easy identification.
 
 --------------------------------------------------------------
 
