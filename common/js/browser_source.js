@@ -27,6 +27,8 @@ function sleep(milliseconds) {
 function renderScoreCard() {
 	if (staticScoreCard.style == "vertical") {
 		document.getElementById("scoreCardFull").innerHTML = formatScoreCardVertical();
+	} else if (staticScoreCard.style == "mcgolf") {
+		document.getElementById("scoreCardFull").innerHTML = formatScoreCardMcGolf();
 	} else {
 		document.getElementById("scoreCardFull").innerHTML = formatScoreCard();
 	}
@@ -64,7 +66,7 @@ function formatScore(playerScore, par, showPar) {
 		if (showPar) {
 			return "<td>" + par + "</td>";
 		} else {
-			return "<td>&nbsp;</td>";
+			return "<td class=\"blank\">&nbsp;</td>";
 		}
 	} else if (playerScore > par) {
 		return "<td class=\"bogey\">" + playerScore + "</td>";
@@ -77,47 +79,72 @@ function formatScore(playerScore, par, showPar) {
 	}
 }
 
-function formatScoreCardVertical() {
+function formatOverUnder(overUnder) {
+	return overUnder == 0 ? 'E' :
+		overUnder > 0 ? '+' + overUnder :
+		overUnder;
+}
 
-	let frontComplete = 0;
-	let backComplete = 0;
+function calculateScoreCard() {
 	let frontPar = 0;
 	let backPar = 0;
+	const playerCount = staticScoreCard.players.length;
+	const playerScores = [];
 
-	const playerScore = {};
-	playerScore.front = [];
-	playerScore.back = [];
-	playerScore.frontTotal = 0;
-	playerScore.backTotal = 0;
+	for (let i = 0; i < playerCount; i++) {
+		playerScores[i] = {};
+		playerScores[i].front = 0;
+		playerScores[i].frontComplete = 0;
+		playerScores[i].back = 0;
+		playerScores[i].backComplete = 0;
+		playerScores[i].overUnder = 0;
+		playerScores[i].scores = [];
+	}
 
 	for (let i = 0; i < staticScoreCard.holes; i++) {
 		let par = Number(staticScoreCard.par[i]);
 
-		let scoreCardPlayer = scoreCard.players[0];
-		let holeScore = Number(scoreCardPlayer.scores[i]);
 		if (i < 9) {
 			frontPar += par;
-			if (holeScore > 0) {
-				frontComplete++;
-				playerScore.front[i] = holeScore;
-				playerScore.frontTotal += holeScore;
-			}
 		} else {
 			backPar += par;
-			if (holeScore > 0) {
-				backComplete++;
-				playerScore.back[i%9] = holeScore;
-				playerScore.backTotal += holeScore;
+		}
+
+		/* Calculate player scores */
+		for (let k = 0; k < playerCount; k++) {
+			let scoreCardPlayer = scoreCard.players[k];
+			let playerScore = Number(scoreCardPlayer.scores[i]);
+			if (playerScore > 0) {
+				if (i < 9) {
+					playerScores[k].frontComplete++;
+					playerScores[k].front += playerScore;
+				} else {
+					playerScores[k].backComplete++;
+					playerScores[k].back += playerScore;
+				}
+				playerScores[k].overUnder += (playerScore - par);
+				playerScores[k].scores[i] = playerScore;
 			}
 		}
 	}
+	return {
+		frontPar: frontPar,
+		backPar: backPar,
+		playerScores: playerScores
+	};
+}
+
+function formatScoreCardVertical() {
+
+	const scoreCard = calculateScoreCard();
+	const playerScore = scoreCard.playerScores[0];
 
 	let html = "<table>"
 		+ "<tr class=\"vscHeader\"><td>front 9</td><td>back 9</td></tr>\n";
 
 	for (let i = 0; i < 9; i++) {
-		let frontScore = playerScore.front[i];
-		let backScore = playerScore.back[i];
+		let frontScore = playerScore.scores[i];
+		let backScore = playerScore.scores[i+9];
 		html += "<tr class=\"vscData\">";
 		html += formatScore(frontScore, Number(staticScoreCard.par[i]), true);
 		html += formatScore(backScore, Number(staticScoreCard.par[i+9]), true);
@@ -125,15 +152,15 @@ function formatScoreCardVertical() {
 	}
 
 	html += "<tr class=\"vscTotal\">";
-	if (frontComplete >= 9) {
-		html += "<td class=\"done\">" + playerScore.frontTotal + "</td>";
+	if (playerScore.frontComplete >= 9) {
+		html += "<td class=\"done\">" + playerScore.front + "</td>";
 	} else {
-		html += "<td>" + frontPar + "</td>";
+		html += "<td>" + scoreCard.frontPar + "</td>";
 	}
-	if (backComplete >= 9) {
-		html += "<td class=\"done\">" + playerScore.backTotal + "</td>";
+	if (playerScore.backComplete >= 9) {
+		html += "<td class=\"done\">" + playerScore.back + "</td>";
 	} else {
-		html += "<td>" + backPar + "</td>";
+		html += "<td>" + scoreCard.backPar + "</td>";
 	}
 	html += "</tr>";
 
@@ -142,10 +169,10 @@ function formatScoreCardVertical() {
 
 function formatScoreCard() {
 
+	const scoreCard = calculateScoreCard();
+
 	let headerRow = "<tr class=\"scHeader\"><td>&nbsp;</td>";
 	let parRow = "<tr class=\"scSubHeader\"><td>&nbsp;</td>";
-	let scoreRow = "";
-	let parTotal = 0;
 	const playerCount = staticScoreCard.players.length;
 	const playerScores = [];
 
@@ -155,36 +182,80 @@ function formatScoreCard() {
 			"<tr class=\"scData\"><td class=\"scName\">"
 			+ staticScoreCard.players[i].name
 			+ "</td>";
-		playerScores[i].total = 0;
 	}
 
 	for (let i = 0; i < staticScoreCard.holes; i++) {
 		let par = Number(staticScoreCard.par[i]);
-		parTotal += par;
 		headerRow += "<td>" + (i+1) + "</td>";
 		parRow += "<td>" + par + "</td>";
 
 		for (let k = 0; k < playerCount; k++) {
-			let scoreCardPlayer = scoreCard.players[k];
-			let playerScore = scoreCardPlayer.scores[i];
+			let playerScore = scoreCard.playerScores[k].scores[i];
 			playerScores[k].row += formatScore(playerScore, par, false);
-			if (playerScore > 0) {
-				playerScores[k].total += (playerScore - par);
-			}
 		}
 	}
 
 	let html = "<table>";
 	html += headerRow + "<td class=\"scTotal\">TOTAL</td></tr>";
-	html += parRow + "<td class=\"scTotal\">PAR " + parTotal + "</td></td>";
+	html += parRow + "<td class=\"scTotal\">PAR " + (scoreCard.frontPar + scoreCard.backPar) + "</td></td>";
 
 	for (let i = 0; i < playerCount; i++) {
-		let playerTotal = playerScores[i].total;
-		playerTotal = playerTotal == 0 ? 'E' :
-				playerTotal > 0 ? '+' + playerTotal :
-				playerTotal;
+		let overUnder = scoreCard.playerScores[i].overUnder;
 		html += playerScores[i].row +
-			"<td class=\"scTotal\">" + (playerTotal) + "</td></tr>";
+			"<td class=\"scTotal\">" + formatOverUnder(overUnder) + "</td></tr>";
+	}
+	return html + "</table>";
+}
+
+function formatScoreCardMcGolf() {
+
+	const scoreCard = calculateScoreCard();
+
+	let headerRow = "<tr class=\"mcScHeader\"><td>HOLE</td>";
+	let parRow = "<tr class=\"mcScSubHeader\"><td>PAR</td>";
+	const playerCount = staticScoreCard.players.length;
+	const playerScores = [];
+
+	for (let i = 0; i < playerCount; i++) {
+		playerScores[i] = {};
+		playerScores[i].row =
+			"<tr class=\"mcScData\"><td class=\"mcScName\">"
+			+ staticScoreCard.players[i].name
+			+ "</td>";
+	}
+
+	/* Iterate and add Hole, Par and Player columns */
+	for (let i = 0; i < staticScoreCard.holes; i++) {
+		let par = Number(staticScoreCard.par[i]);
+		headerRow += "<td>" + (i+1) + "</td>";
+		parRow += "<td>" + par + "</td>";
+
+		if (i == 8) {
+			headerRow += "<td class=\"band\">OUT</td>";
+			parRow += "<td class=\"band\">" + scoreCard.frontPar + "</td>";
+		} else if (i == 17) {
+			headerRow += "<td class=\"band\">IN</td>";
+			parRow += "<td class=\"band\">" + scoreCard.backPar + "</td>";
+		}
+
+		for (let k = 0; k < playerCount; k++) {
+			let playerScore = scoreCard.playerScores[k].scores[i];
+			playerScores[k].row += formatScore(playerScore, par, false);
+			if (i == 8) {
+				playerScores[k].row += "<td class=\"band\">" + scoreCard.playerScores[k].front + "</td>";
+			} else if (i == 17) {
+				playerScores[k].row += "<td class=\"band\">" + scoreCard.playerScores[k].back + "</td>";
+			}
+		}
+	}
+
+	let html = "<table>";
+	html += headerRow + "<td class=\"mcScTotal\">TOTAL</td></tr>";
+	html += parRow + "<td class=\"mcScTotal\">" + (scoreCard.frontPar + scoreCard.backPar) + "</td></td>";
+
+	for (let i = 0; i < playerCount; i++) {
+		html += playerScores[i].row +
+			"<td class=\"mcScTotal\">" + (scoreCard.playerScores[i].front + scoreCard.playerScores[i].back) + "</td></tr>";
 	}
 	return html + "</table>";
 }

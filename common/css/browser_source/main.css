@@ -5,11 +5,55 @@
      font-family: tahoma;
  }
 
-.scData > td.bogey {
+/* Normal td */
+.scData > td {
+ 	background-color: #444444;
+	color: #ebebeb;
+	padding: 2px;
+	font-weight: bold;
+}
+
+/* McGolf td's */
+.mcScHeader > td {
+ 	background-color: #333FBC99;
+ 	width: 28px;
+	color: white;
+	padding: 2px;
+}
+.mcScSubHeader > td {
+ 	background-color: #5A91CB99;
+	color: black;
+	padding: 2px;
+}
+.mcScData > td {
+ 	background-color: #333FBC99;
+	color: white;
+	padding: 2px;
+	font-weight: bold;
+}
+.mcScHeader > td.band {
+ 	background-color: #0D1FE299;
+}
+.mcScSubHeader > td.band {
+ 	background-color: #6BE5F599;
+}
+.mcScData > td.band {
+ 	background-color: #0D1FE299;
+}
+
+
+/* td special overrides */
+td.blank {
+	text-decoration: underline;
+}
+td.bogey {
 	color: red;
 }
-.scData > td.birdie {
+td.birdie {
 	color: lime;
+}
+td.eagle {
+	color: yellow;
 }
 
 .scoreCard > table {
@@ -37,17 +81,6 @@
 	color: #c0c0c0;
 	padding: 2px;
 }
-.scData > td {
- 	background-color: #444444;
-	color: #ebebeb;
-	padding: 2px;
-	font-weight: bold;
-}
-.scData > td.scPar {
-	color: #ebebeb;
-	font-weight: lighter;
-}
-
 /* Vertical card extras */
 .vscHeader > td {
  	background-color: #232323;
