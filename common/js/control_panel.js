@@ -354,137 +354,26 @@
 	}
 
 	function obsThemeChange() {
-		if (document.getElementById("obsTheme").value ==  "28") {
-			localStorage.setItem("obsTheme", "28");
-			document.getElementById("obsTheme").value =  "28";
-			document.getElementsByTagName("body")[0].style.background = "#2b2e38";
-			document.styleSheets[0].disabled = false;
-			document.styleSheets[1].disabled = true;
-			document.styleSheets[2].disabled = true;
-			document.styleSheets[3].disabled = true;
-			document.styleSheets[4].disabled = true;
-			document.styleSheets[5].disabled = true;
+		const styleToBackground = new Map([
+			["28", "#2b2e38"],
+			["27", "#1f1e1f"],
+			["acri", "#181819"],
+			["grey", "#2f2f2f"],
+			["light", "#e5e5e5"],
+			["rachni", "#232629"],
+		]);
 
-		}
-		if (document.getElementById("obsTheme").value ==  "27") {
-			localStorage.setItem("obsTheme", "27");
-			document.getElementById("obsTheme").value =  "27";
-			document.getElementsByTagName("body")[0].style.background = "#1f1e1f";
-			document.styleSheets[0].disabled = true;
-			document.styleSheets[1].disabled = false;
-			document.styleSheets[2].disabled = true;
-			document.styleSheets[3].disabled = true;
-			document.styleSheets[4].disabled = true;
-			document.styleSheets[5].disabled = true;
-		}
-		if (document.getElementById("obsTheme").value ==  "acri") {
-			localStorage.setItem("obsTheme", "acri");
-			document.getElementById("obsTheme").value =  "acri";
-			document.getElementsByTagName("body")[0].style.background = "#181819";
-			document.styleSheets[0].disabled = true;
-			document.styleSheets[1].disabled = true;
-			document.styleSheets[2].disabled = false;
-			document.styleSheets[3].disabled = true;
-			document.styleSheets[4].disabled = true;
-			document.styleSheets[5].disabled = true;
-		}
-		if (document.getElementById("obsTheme").value ==  "grey") {
-			localStorage.setItem("obsTheme", "grey");
-			document.getElementById("obsTheme").value =  "grey";
-			document.getElementsByTagName("body")[0].style.background = "#2f2f2f";
-			document.styleSheets[0].disabled = true;
-			document.styleSheets[1].disabled = true;
-			document.styleSheets[2].disabled = true;
-			document.styleSheets[3].disabled = false;
-			document.styleSheets[4].disabled = true;
-			document.styleSheets[5].disabled = true;
-		}
-		if (document.getElementById("obsTheme").value ==  "light") {
-			localStorage.setItem("obsTheme", "light");
-			document.getElementById("obsTheme").value =  "light";
-			document.getElementsByTagName("body")[0].style.background = "#e5e5e5";
-			document.styleSheets[0].disabled = true;
-			document.styleSheets[1].disabled = true;
-			document.styleSheets[2].disabled = true;
-			document.styleSheets[3].disabled = true;
-			document.styleSheets[4].disabled = false;
-			document.styleSheets[5].disabled = true;
-		}
-		if (document.getElementById("obsTheme").value ==  "rachni") {
-			localStorage.setItem("obsTheme", "rachni");
-			document.getElementById("obsTheme").value =  "rachni";
-			document.getElementsByTagName("body")[0].style.background = "#232629";
-			document.styleSheets[0].disabled = true;
-			document.styleSheets[1].disabled = true;
-			document.styleSheets[2].disabled = true;
-			document.styleSheets[3].disabled = true;
-			document.styleSheets[4].disabled = true;
-			document.styleSheets[5].disabled = false;
-			}
-	}
+		const obsTheme = document.getElementById("obsTheme").value;
 
-	function startThemeCheck() {
-		if (localStorage.getItem("obsTheme") == null) { localStorage.setItem("obsTheme", "28"); document.getElementById("obsTheme").value =  "28";  };
-		if (localStorage.getItem("obsTheme") == "28") {
-			document.getElementById("obsTheme").value =  "28";
-			document.getElementsByTagName("body")[0].style.background = "#2b2e38";
-			document.styleSheets[0].disabled = false;
-			document.styleSheets[1].disabled = true;
-			document.styleSheets[2].disabled = true;
-			document.styleSheets[3].disabled = true;
-			document.styleSheets[4].disabled = true;
-			document.styleSheets[5].disabled = true;
-		}
-		if (localStorage.getItem("obsTheme") == "27") {
-			document.getElementById("obsTheme").value =  "27";
-			document.getElementsByTagName("body")[0].style.background = "#1f1e1f";
-			document.styleSheets[0].disabled = true;
-			document.styleSheets[1].disabled = false;
-			document.styleSheets[2].disabled = true;
-			document.styleSheets[3].disabled = true;
-			document.styleSheets[4].disabled = true;
-			document.styleSheets[5].disabled = true;
-		}
-		if (localStorage.getItem("obsTheme") == "acri") {
-			document.getElementById("obsTheme").value =  "acri";
-			document.getElementsByTagName("body")[0].style.background = "#181819";
-			document.styleSheets[0].disabled = true;
-			document.styleSheets[1].disabled = true;
-			document.styleSheets[2].disabled = false;
-			document.styleSheets[3].disabled = true;
-			document.styleSheets[4].disabled = true;
-			document.styleSheets[5].disabled = true;
-		}
-		if (localStorage.getItem("obsTheme") == "grey") {
-			document.getElementById("obsTheme").value =  "grey";
-			document.getElementsByTagName("body")[0].style.background = "#2f2f2f";
-			document.styleSheets[0].disabled = true;
-			document.styleSheets[1].disabled = true;
-			document.styleSheets[2].disabled = true;
-			document.styleSheets[3].disabled = false;
-			document.styleSheets[4].disabled = true;
-			document.styleSheets[5].disabled = true;
-		}
-		if (localStorage.getItem("obsTheme") == "light") {
-			document.getElementById("obsTheme").value =  "light";
-			document.getElementsByTagName("body")[0].style.background = "#e5e5e5";
-			document.styleSheets[0].disabled = true;
-			document.styleSheets[1].disabled = true;
-			document.styleSheets[2].disabled = true;
-			document.styleSheets[3].disabled = true;
-			document.styleSheets[4].disabled = false;
-			document.styleSheets[5].disabled = true;
-		}
-		if (localStorage.getItem("obsTheme") == "rachni") {
-			document.getElementById("obsTheme").value =  "rachni";
-			document.getElementsByTagName("body")[0].style.background = "#232629";
-			document.styleSheets[0].disabled = true;
-			document.styleSheets[1].disabled = true;
-			document.styleSheets[2].disabled = true;
-			document.styleSheets[3].disabled = true;
-			document.styleSheets[4].disabled = true;
-			document.styleSheets[5].disabled = false;
-		}
+		localStorage.setItem("obsTheme", obsTheme);
+		document.getElementById("obsTheme").value = obsTheme;
+		document.getElementsByTagName("body")[0].style.background = styleToBackground.get(obsTheme);
+		document.styleSheets[0].disabled = obsTheme !== "28";
+		document.styleSheets[1].disabled = obsTheme !== "27";
+		document.styleSheets[2].disabled = obsTheme !== "acri";
+		document.styleSheets[3].disabled = obsTheme !== "grey";
+		document.styleSheets[4].disabled = obsTheme !== "light";
+		document.styleSheets[5].disabled = obsTheme !== "rachni";
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -559,9 +448,11 @@
 	loadScoreCard();
 	renderScoreCard();
 
-	if (localStorage.getItem("obsTheme") == "28") { document.getElementById("obsTheme").value = "28"; }
-
-	let style = localStorage.getItem("b_style");
+	const obsTheme = localStorage.getItem("obsTheme");
+	if (obsTheme !== null) {
+		document.getElementById("obsTheme").value = obsTheme;
+	}
+	const style = localStorage.getItem("b_style");
 	if (style !== null) {
 		document.getElementById("bsStyle").value = style;
 	}
@@ -569,5 +460,6 @@
 		slider.value = localStorage.getItem("opacity");
 	}
 	document.getElementById("verNum").innerHTML = versionNum;
-	postNames();startThemeCheck();
+	postNames();
+	obsThemeChange();
 
