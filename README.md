@@ -20,20 +20,20 @@ Zip contents:
 |   |   |-control_panel.js
 |   |
 |   |-[css]
-|   	|-[control_panel]
-|   	|   |-yami.css
-|    	|   |-acri.css
-|   	|   |-dark.css
-|  	|   |-grey.css
-|   	|   |-rachni.css
-|  	|   |-light.css
-|	|   |-required.css
-|	|
-|	|-[browser_source]
-|   	    |-100.css
-|   	    |-125.css
-|   	    |-150.css
-|   	    |-200.css
+|       |-[control_panel]
+|       |   |-yami.css
+|       |   |-acri.css
+|       |   |-dark.css
+|       |   |-grey.css
+|       |   |-rachni.css
+|       |   |-light.css
+|       |   |-required.css
+|       |
+|       |-[browser_source]
+|           |-100.css
+|           |-125.css
+|           |-150.css
+|           |-200.css
 |
 |-scoreCard_hotkeys.lua
 |-browser_source.html
@@ -102,3 +102,19 @@ Single player mode, tracks current score and can render and GIR and 3PUTT counte
 If you enable the second player you can track another score.
 
 ![multi player widgets](images/multi-player.png)
+
+## Themes
+
+There are also a few different scoreboard themes available.
+
+### McGolf
+
+A scoreboard like that used on [McGolfinTV](https://www.youtube.com/@McGolfinTV).
+
+![McGolfin TV](images/mcgolf.png)
+
+### Vertical
+
+A vertical compact scoreboard.
+
+![Vertical Scorebaord example](images/vertical.png)
