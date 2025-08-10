@@ -43,6 +43,63 @@
 	padding: 2px;
 	font-weight: bold;
 }
+.scData > td.scPar {
+	color: #ebebeb;
+	font-weight: lighter;
+}
+
+/* Vertical card extras */
+.vscHeader > td {
+ 	background-color: #232323;
+	text-transform: capitalize;
+	font-size: 8px;
+	font-weight: lighter;
+	color: white;
+}
+.vscTotal > td.done {
+ 	background-color: #232323;
+	color: white;
+	font-weight: bold;
+}
+.vscTotal > td {
+	color: #ebebeb;
+	font-weight: lighter;
+	padding: 5px;
+}
+.vscData > td {
+ 	background-color: #444444;
+	color: #ebebeb;
+	height: 28px;
+}
+.vscData > td.par {
+	background: url('http://shorne.noip.me/downloads/images/white-disc.png'), #444444;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	color: black;
+	height: 28px;
+}
+.vscData > td.bogey {
+	background: url('http://shorne.noip.me/downloads/images/black-disc.png'), #444444;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	color: #ebebeb;
+}
+.vscData > td.birdie {
+	background: url('http://shorne.noip.me/downloads/images/lime-disc.png'), #444444;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	color: black;
+}
+.vscData > td.eagle {
+	background: url('http://shorne.noip.me/downloads/images/yellow-disc.png'), #444444;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	color: black;
+}
 
  .noShow {
      visibility: hidden;

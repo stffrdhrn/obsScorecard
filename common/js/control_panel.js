@@ -10,26 +10,9 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	function bsStyleChange() {
-		if (document.getElementById("bsStyle").value == 1) {
-		bc.postMessage({command:'style100'});
-		localStorage.setItem("b_style", 1);
-
-		}
-		if (document.getElementById("bsStyle").value == 2) {
-		bc.postMessage({command:'style125'});
-		localStorage.setItem("b_style", 2);
-
-		}
-		if (document.getElementById("bsStyle").value == 3) {
-		bc.postMessage({command:'style150'});
-		localStorage.setItem("b_style", 3);
-
-		}
-		if (document.getElementById("bsStyle").value == 4) {
-		bc.postMessage({command:'style200'});
-		localStorage.setItem("b_style", 4);
-
-		}
+		let bsStyle = document.getElementById("bsStyle").value;
+		bc.postMessage({style: bsStyle});
+		localStorage.setItem("b_style", bsStyle);
 	}
 
 	function setSelectColor(divId, cvalue) {
@@ -75,15 +58,15 @@
 	}
 
 	function playerColorChange(player) {
-	    const cvalue  = document.getElementById("p"+player+"colorDiv").value;
+	    const cvalue  = document.getElementById("p"+player+"color").value;
 	    if (player == 1) {
 	       p1Color = cvalue;
 	       localStorage.setItem("p1colorSet", cvalue);
-	       setSelectColor("p1colorDiv", cvalue);
+	       setSelectColor("p1color", cvalue);
 	    } else {
 	       p2Color = cvalue;
 	       localStorage.setItem("p2colorSet", cvalue);
-	       setSelectColor("p2colorDiv", cvalue);
+	       setSelectColor("p2color", cvalue);
 	    }
             postStaticScoreCard();
 	}
@@ -552,17 +535,13 @@
 	}
 
 	if (localStorage.getItem('p1colorSet') !== null) {
-		var cvalue = localStorage.getItem('p1colorSet');
-		document.getElementById('p1colorDiv').style.background = localStorage.getItem('p1colorSet');
-		document.getElementsByTagName("select")[0].options[0].value = cvalue;
-		if (cvalue == "orange"  || cvalue == "khaki"  || cvalue == "tomato" || cvalue == "red" || cvalue == "white" || cvalue == "orangered" || cvalue == "orange" || cvalue == "lightgreen" || cvalue == "lightseagreen")  { document.getElementById("p1colorDiv").style.color= "#000";} else { document.getElementById("p1colorDiv").style.color= "lightgrey";};
-
+		const cvalue = localStorage.getItem('p1colorSet');
+		setSelectColor("p1color", cvalue);
 	}
 
 	if (localStorage.getItem('p2colorSet') !== null) {
 		var cvalue = localStorage.getItem('p2colorSet');
-		document.getElementById('p2colorDiv').style.background = localStorage.getItem('p2colorSet');
-		if (cvalue == "orange"  || cvalue == "khaki"  || cvalue == "tomato" || cvalue == "red" || cvalue == "orangered" || cvalue == "white" || cvalue == "orange" || cvalue == "lightgreen" || cvalue == "lightseagreen")  { document.getElementById("p2colorDiv").style.color= "#000";} else { document.getElementById("p2colorDiv").style.color= "lightgrey";};
+		setSelectColor("p2color", cvalue);
 
 	}
 
@@ -581,9 +560,11 @@
 	renderScoreCard();
 
 	if (localStorage.getItem("obsTheme") == "28") { document.getElementById("obsTheme").value = "28"; }
-	if (localStorage.getItem("b_style") == "1") { document.getElementById("bsStyle").value = "1"; }
-	if (localStorage.getItem("b_style") == "2") { document.getElementById("bsStyle").value = "2"; }
-	if (localStorage.getItem("b_style") == "3") { document.getElementById("bsStyle").value = "3"; }
+
+	let style = localStorage.getItem("b_style");
+	if (style !== null) {
+		document.getElementById("bsStyle").value = style;
+	}
 	if (localStorage.getItem("opacity") > 0) {
 		slider.value = localStorage.getItem("opacity");
 	}

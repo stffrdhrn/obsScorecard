@@ -29,12 +29,10 @@
 	  <div id="mainDiv" class="vertical">
             <text style="font-size:7pt; color:#818181">Golf Scorecard v<text id="verNum"></text></text>
 	    <div class="horizontal">
-	      <div class="themeSizeLabels" id="obsThemeLabel">Board size:
+	      <div class="themeSizeLabels" id="obsThemeLabel">Board style:
 		<select class="obs28" name="bsstyle" id="bsStyle" onchange="bsStyleChange()">
-		    <option value="1">small</option>
-		    <option value="2" selected>medium</option>
-		    <option value="3">large</option>
-		    <option value="4">XL</option>
+		    <option value="vertical">Vertical</option>
+		    <option value="horizontal" selected>Normal</option>
 		</select>
 	      </div>
 	      <div class="themeSizeLabels" id="obsThemeDiv">Control theme:
@@ -100,7 +98,7 @@
 
 	     <div class="horizontal">
 		<select style="text-align:justify"
-			id="p1colorDiv"
+			id="p1color"
 			class="obs28" onchange="playerColorChange(1)">
 		    <option value="" default>P1 Color</option>
 		    <option value="grey">Grey</option>
@@ -120,7 +118,7 @@
 		</select>
 	        <div class="btn obs28" onclick="swapColors()" id="swapBtn">Swap</div>
 		<select style="text-align:justify"
-			id="p2colorDiv"
+			id="p2color"
 			class="obs28" onchange="playerColorChange(2)">
 		    <option value="" default>P2 Color</option>
 		    <option value="grey">Grey</option>

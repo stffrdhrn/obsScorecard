@@ -25,8 +25,12 @@ function sleep(milliseconds) {
 }
 
 function renderScoreCard() {
-    document.getElementById("scoreCardFull").innerHTML = formatScoreCard();
-    setOpacity(staticScoreCard.opacity);
+	if (staticScoreCard.style == "vertical") {
+		document.getElementById("scoreCardFull").innerHTML = formatScoreCardVertical();
+	} else {
+		document.getElementById("scoreCardFull").innerHTML = formatScoreCard();
+	}
+	setOpacity(staticScoreCard.opacity);
 }
 
 function setStaticScoreCard(scoreCardHoles, scoreCardPar) {
@@ -50,12 +54,90 @@ function setPlayerName(idx, playerName, playerColor, playerEnabled) {
 }
 
 function styleChange(n) {
-	// Enable/disabled the scaling css
-	console.log("Setting scaling to: " + n);
-	document.styleSheets[1].disabled = n != 1;
-	document.styleSheets[2].disabled = n != 2;
-	document.styleSheets[3].disabled = n != 3;
-	document.styleSheets[4].disabled = n != 4;
+	console.log("Setting style to: " + n);
+	staticScoreCard.style = n;
+	renderScoreCard();
+}
+
+function formatScore(playerScore, par, showPar) {
+	if (!playerScore || playerScore <= 0) {
+		if (showPar) {
+			return "<td>" + par + "</td>";
+		} else {
+			return "<td>&nbsp;</td>";
+		}
+	} else if (playerScore > par) {
+		return "<td class=\"bogey\">" + playerScore + "</td>";
+	} else if ((par - playerScore) == 1) {
+		return "<td class=\"birdie\">" + playerScore + "</td>";
+	} else if (playerScore < par) {
+		return "<td class=\"eagle\">" + playerScore + "</td>";
+	} else {
+		return "<td class=\"par\">" + playerScore + "</td>";
+	}
+}
+
+function formatScoreCardVertical() {
+
+	let frontComplete = 0;
+	let backComplete = 0;
+	let frontPar = 0;
+	let backPar = 0;
+
+	const playerScore = {};
+	playerScore.front = [];
+	playerScore.back = [];
+	playerScore.frontTotal = 0;
+	playerScore.backTotal = 0;
+
+	for (let i = 0; i < staticScoreCard.holes; i++) {
+		let par = Number(staticScoreCard.par[i]);
+
+		let scoreCardPlayer = scoreCard.players[0];
+		let holeScore = Number(scoreCardPlayer.scores[i]);
+		if (i < 9) {
+			frontPar += par;
+			if (holeScore > 0) {
+				frontComplete++;
+				playerScore.front[i] = holeScore;
+				playerScore.frontTotal += holeScore;
+			}
+		} else {
+			backPar += par;
+			if (holeScore > 0) {
+				backComplete++;
+				playerScore.back[i%9] = holeScore;
+				playerScore.backTotal += holeScore;
+			}
+		}
+	}
+
+	let html = "<table>"
+		+ "<tr class=\"vscHeader\"><td>front 9</td><td>back 9</td></tr>\n";
+
+	for (let i = 0; i < 9; i++) {
+		let frontScore = playerScore.front[i];
+		let backScore = playerScore.back[i];
+		html += "<tr class=\"vscData\">";
+		html += formatScore(frontScore, Number(staticScoreCard.par[i]), true);
+		html += formatScore(backScore, Number(staticScoreCard.par[i+9]), true);
+		html += "</td>\n";
+	}
+
+	html += "<tr class=\"vscTotal\">";
+	if (frontComplete >= 9) {
+		html += "<td class=\"done\">" + playerScore.frontTotal + "</td>";
+	} else {
+		html += "<td>" + frontPar + "</td>";
+	}
+	if (backComplete >= 9) {
+		html += "<td class=\"done\">" + playerScore.backTotal + "</td>";
+	} else {
+		html += "<td>" + backPar + "</td>";
+	}
+	html += "</tr>";
+
+	return html + "</table>";
 }
 
 function formatScoreCard() {
@@ -85,15 +167,7 @@ function formatScoreCard() {
 		for (let k = 0; k < playerCount; k++) {
 			let scoreCardPlayer = scoreCard.players[k];
 			let playerScore = scoreCardPlayer.scores[i];
-			if (!playerScore || playerScore <= 0) {
-				playerScores[k].row += "<td>&nbsp;</td>";
-			} else if (playerScore > par) {
-				playerScores[k].row += "<td class=\"bogey\">" + playerScore + "</td>";
-			} else if (playerScore < par) {
-				playerScores[k].row += "<td class=\"birdie\">" + playerScore + "</td>";
-			} else {
-				playerScores[k].row += "<td>" + playerScore + "</td>";
-			}
+			playerScores[k].row += formatScore(playerScore, par, false);
 			if (playerScore > 0) {
 				playerScores[k].total += (playerScore - par);
 			}
@@ -116,17 +190,32 @@ function formatScoreCard() {
 }
 
 function setOpacity(n) {
-	document.querySelectorAll(".scData > td").forEach((el) => {
+	document.querySelectorAll(".scData > td, .vscData > td").forEach((el) => {
 		el.style.background = 'rgb(120 120 120 / ' + (100*Number(n)) + '%)';
 	});
 	document.querySelectorAll(".scData > td.scName").forEach((el, i) => {
 		el.style.background = 'linear-gradient(to left, rgb(120 120 120 / ' + (100*Number(n)) + '%), ' +
 					staticScoreCard.players[i].color + ")";
 	});
-	document.querySelectorAll(".scSubHeader > td").forEach((el) => {
+	document.querySelectorAll(".scSubHeader > td, .vscTotal > td, .vscHeader > td").forEach((el) => {
 		el.style.background = 'rgb(80 80 80 / ' + (100*Number(n)) + '%)';
 	});
 
+	const verticalStyles = new Map([
+		["par",    "white"],
+		["birdie", "lime"],
+		["bogey",  "black"],
+		["eagle",  "yellow"],
+	]);
+	verticalStyles.forEach((val, key) => {
+		document.querySelectorAll(".vscData > td." + key).forEach((el) => {
+			el.style.background = "url('http://shorne.noip.me/downloads/images/" + val + "-disc.png'), "
+				+  'rgb(120 120 120 / ' + (100*Number(n)) + '%)';
+			el.style.backgroundSize = "contain";
+			el.style.backgroundPosition = "center";
+			el.style.backgroundRepeat = "no-repeat";
+		});
+	});
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -141,7 +230,8 @@ var staticScoreCard = {
    ],
    holes: 18,
    par: [],
-   opacity: 0.99
+   opacity: 0.99,
+   style: "horizontal"
 };
 
 var scoreCard = {
@@ -181,11 +271,8 @@ bc.onmessage = (event) => {
 	}
 
 	if (event.data.style != null) {
-		console.log("event.data.command: " + event.data.command);
-		if (event.data.style == "style100") { styleChange(1); };
-		if (event.data.style == "style125") { styleChange(2); };
-		if (event.data.style == "style150") { styleChange(3); };
-		if (event.data.style == "style200") { styleChange(4); };
+		console.log("event.data.style: " + event.data.style);
+		styleChange(event.data.style);
 	}
 }
 
@@ -220,10 +307,9 @@ bc.onmessage = (event) => {
 	}
 
 	/* Load Style Data */
-	if (localStorage.getItem("b_style") != null) {
-		styleChange(localStorage.getItem("b_style"));
-	} else {
-		styleChange(1);
+	const bsStyle = localStorage.getItem("b_style");
+	if (localStorage.getItem("b_style") !== null) {
+		staticScoreCard.style = bsStyle;
 	}
 	if (localStorage.getItem("opacity") > 0) {
 		staticScoreCard.opacity = localStorage.getItem("opacity") / 100;
