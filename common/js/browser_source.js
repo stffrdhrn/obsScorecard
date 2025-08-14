@@ -136,7 +136,7 @@ function calculateScoreCard() {
 
 function formatScoreCardVertical() {
 
-	const scoreCard = calculateScoreCard();
+	const scoreCard = calculateScore_;
 	const playerScore = scoreCard.playerScores[0];
 
 	let html = "<table>"
@@ -224,6 +224,16 @@ function formatScoreCardMcGolf() {
 			+ "</td>";
 	}
 
+	function scoreFmt(score, classes) {
+		let fmt = "<td class=\"";
+		fmt += classes;
+		if (score == 0) {
+			fmt += " blank";
+		}
+		fmt += "\">" + (score == 0 ?  "&nbsp;" : String(score)) + "</td>";
+		return fmt;
+	}
+
 	/* Iterate and add Hole, Par and Player columns */
 	for (let i = 0; i < staticScoreCard.holes; i++) {
 		let par = Number(staticScoreCard.par[i]);
@@ -242,34 +252,39 @@ function formatScoreCardMcGolf() {
 			let playerScore = scoreCard.playerScores[k].scores[i];
 			playerScores[k].row += formatScore(playerScore, par, false);
 			if (i == 8) {
-				playerScores[k].row += "<td class=\"band\">" + scoreCard.playerScores[k].front + "</td>";
+				playerScores[k].row += scoreFmt(scoreCard.playerScores[k].front, "band");
 			} else if (i == 17) {
-				playerScores[k].row += "<td class=\"band\">" + scoreCard.playerScores[k].back + "</td>";
+				playerScores[k].row += scoreFmt(scoreCard.playerScores[k].back, "band");
 			}
 		}
 	}
 
-	let html = "<table>";
+	let html = "<table class=\"mcGolf\">";
 	html += headerRow + "<td class=\"mcScTotal\">TOTAL</td></tr>";
 	html += parRow + "<td class=\"mcScTotal\">" + (scoreCard.frontPar + scoreCard.backPar) + "</td></td>";
 
 	for (let i = 0; i < playerCount; i++) {
 		html += playerScores[i].row +
-			"<td class=\"mcScTotal\">" + (scoreCard.playerScores[i].front + scoreCard.playerScores[i].back) + "</td></tr>";
+			scoreFmt(scoreCard.playerScores[i].front + scoreCard.playerScores[i].back, "mcScTotal") + "</td>";
 	}
 	return html + "</table>";
 }
 
 function setOpacity(n) {
+	const opacityHex = Math.floor((255*Number(n))).toString(16).toUpperCase();
+	const opacityPct = (100*Number(n)) + '%';
+
+	console.log("Opacity set to: " + n + " hex: " + opacityHex + " pct: " + opacityPct);
+
 	document.querySelectorAll(".scData > td, .vscData > td").forEach((el) => {
-		el.style.background = 'rgb(120 120 120 / ' + (100*Number(n)) + '%)';
+		el.style.background = 'rgb(120 120 120 / ' + opacityPct + ')';
 	});
 	document.querySelectorAll(".scData > td.scName").forEach((el, i) => {
-		el.style.background = 'linear-gradient(to left, rgb(120 120 120 / ' + (100*Number(n)) + '%), ' +
+		el.style.background = 'linear-gradient(to left, rgb(120 120 120 / ' + opacityPct + '), ' +
 					staticScoreCard.players[i].color + ")";
 	});
 	document.querySelectorAll(".scSubHeader > td, .vscTotal > td, .vscHeader > td").forEach((el) => {
-		el.style.background = 'rgb(80 80 80 / ' + (100*Number(n)) + '%)';
+		el.style.background = 'rgb(80 80 80 / ' + opacityPct + ')';
 	});
 
 	const verticalStyles = new Map([
@@ -287,6 +302,18 @@ function setOpacity(n) {
 			el.style.backgroundRepeat = "no-repeat";
 		});
 	});
+	const mcColors = new Map([
+		[".mcScHeader > td, .mcScData > td", "#333FBC"],
+		[".mcScSubHeader > td", "#5A91CB"],
+		[".mcScHeader > td.band, .mcScData > td.band", "#0D1FE2"],
+		[".mcScSubHeader > td.band", "#6BE5F5"],
+	]);
+	mcColors.forEach((val, key) => {
+		document.querySelectorAll(key).forEach((el) => {
+			el.style.background = val + opacityHex;
+		});
+	});
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

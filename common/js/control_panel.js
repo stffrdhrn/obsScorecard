@@ -71,6 +71,13 @@
             postStaticScoreCard();
 	}
 
+	function setOpacity(pct) {
+		document.getElementById("opacityLabel").innerHTML = "Opacity: " + (pct) + "%";
+		const sliderValue = pct/100;
+		bc.postMessage({opacity:sliderValue});
+		localStorage.setItem("opacity", pct)
+	}
+
 	function postNames() {
 		/* Read DOM to model */
 		p1Name = document.getElementById("p1Name").value;
@@ -153,16 +160,19 @@
 	}
 
 
-	function postScores() {
-		const p1Score = document.getElementById("p1Score");
-		const p2Score = document.getElementById("p2Score");
-		const p1Putts = document.getElementById("p1Putts");
-		const p2Putts = document.getElementById("p2Putts");
+	function postScores(update = true) {
+		/* Update the current score, allow bypassing during reset */
+		if (update) {
+			const p1Score = document.getElementById("p1Score");
+			const p2Score = document.getElementById("p2Score");
+			const p1Putts = document.getElementById("p1Putts");
+			const p2Putts = document.getElementById("p2Putts");
 
-		p1Data.scores[currentHole-1] = p1Score.value;
-		p2Data.scores[currentHole-1] = p2Score.value;
-		p1Data.putts[currentHole-1] = p1Putts.value;
-		p2Data.putts[currentHole-1] = p2Putts.value;
+			p1Data.scores[currentHole-1] = p1Score.value;
+			p2Data.scores[currentHole-1] = p2Score.value;
+			p1Data.putts[currentHole-1] = p1Putts.value;
+			p2Data.putts[currentHole-1] = p2Putts.value;
+		}
 
 		bc.postMessage({ scores: [ p1Data, p2Data ]});
 	}
@@ -350,6 +360,7 @@
 		currentHole = 1;
 		storeScoreCard();
 		renderScoreCard();
+		postScores(false); /* Post scores but don't update */
 		} else { }
 	}
 
@@ -418,9 +429,7 @@
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	slider.oninput = function() {
-		const sliderValue = this.value/100;
-		bc.postMessage({opacity:sliderValue});
-		localStorage.setItem("opacity", this.value);
+		setOpacity(this.value);
 	}
 
 	if (localStorage.getItem('p1colorSet') !== null) {
@@ -458,6 +467,7 @@
 	}
 	if (localStorage.getItem("opacity") > 0) {
 		slider.value = localStorage.getItem("opacity");
+		setOpacity(slider.value);
 	}
 	document.getElementById("verNum").innerHTML = versionNum;
 	postNames();

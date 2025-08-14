@@ -3,7 +3,7 @@ ScoreCard addon for OBS.
 Based originally on https://github.com/ngholson/g4ScoreBoard.
 https://g4billiards.com http://www.g4creations.com
 
-this is a purely javascript/html/css driven golf scorecard system for OBS Studio
+this is a purely javascript/html/css driven golf scorecard plugin for OBS Studio
 
 -------------------------------------------------------------
 
@@ -47,15 +47,18 @@ Zip contents:
 
 ## Installation:
 
+Download one of the github [Tags](https://github.com/stffrdhrn/obsScorecard/tags)
+or Releas zip files.
+
 Extract the downloaded file to the directory of your choosing,
 just make sure you know where to find it again.
 
 OBS V27.1 and lower Configuration:
 
- 1. click on the Docks Menu from the top menu bar.
+ 1. In OBS click on the Docks Menu from the top menu bar.
  2. Select "Custom Browser Docks".
  3. type a name (G4ScoreBoard) in the "Dock Name" box.
- 4. input the full path to "control_panel.html" in the URL box. 
+ 4. input the full path to "control_panel.html" in the URL box.
    (example: "c:\users\yourname\desktop\scorecard\control_panel.html")
  5. Click "Close"
  6. Select the scene you want the scoreboard to display.
@@ -67,10 +70,10 @@ OBS V27.1 and lower Configuration:
 
 OBS V27.2 and higher Configuration:
 
- 1. click on the Docks Menu from the top menu bar.
+ 1. In OBS click on the Docks Menu from the top menu bar.
  2. Select "Custom Browser Docks".
  3. type a name (G4ScoreBoard) in the "Dock Name" box.
- 4. input the full path file URI to "control_panel.html" in the URL box. 
+ 4. input the full path file URI to "control_panel.html" in the URL box.
    (example: "file:///c:/users/yourname/desktop/scorecard/control_panel.html")
  5. Click "Close"
  6. Select the scene you want the scoreboard to display.

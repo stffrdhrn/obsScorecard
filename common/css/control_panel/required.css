@@ -1,5 +1,5 @@
 .slidecontainer {
-	
+
 }
 
 .hole {
@@ -26,7 +26,7 @@
 }
 
 body {
-	font-family:tahoma;
+	font-family: "tahoma", sans-serif;
 	background: #2b2e38;
 }
 
@@ -42,7 +42,7 @@ div {
 text {
 	cursor: default;
 }
-	
+
 #mainDiv {
 	border: 0px solid #000;
 	border-radius: 0px;
@@ -61,16 +61,6 @@ text {
 	display: flex;
 	flex-direction: row;
 	gap: 4px;
-}
-	
-#p1colorDiv, #p2colorDiv {
-	cursor: pointer;
-	width:116px;
-
-	color: #fff;
-	border-radius:5px;
-	font-family:tahoma;
-	font-size:8pt;
 }
 
 .noShow {
@@ -94,7 +84,6 @@ text {
 	font-size: 8pt;
 	cursor: pointer;
 	border-radius:5px;
-	font-family:tahoma;
 
 	bottom:0px;
 	border:0px;
@@ -105,7 +94,6 @@ text {
 	font-size: 8pt;
 	cursor: pointer;
 	border-radius:5px;
-	font-family:tahoma;
 	top:10px;
 	border:0px;
 	left:50%;
@@ -116,14 +104,12 @@ text {
 	font-size: 8pt;
 	cursor: pointer;
 	border-radius:5px;
-	font-family:tahoma;
 	text-align:justify
 }
 
 #obsThemeLabel {
 	font-size: 8pt;
 	right:50%;
-	font-family:tahoma;
 	font-size:8pt;
 	top:10px;
 }
