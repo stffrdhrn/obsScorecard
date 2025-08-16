@@ -59,12 +59,17 @@ function setScores(scores) {
 }
 
 function styleChange(n) {
-	// Enable/disabled the scaling css
-	console.log("Setting scaling to: " + n);
-	document.styleSheets[1].disabled = n != 1;
-	document.styleSheets[2].disabled = n != 2;
-	document.styleSheets[3].disabled = n != 3;
-	document.styleSheets[4].disabled = n != 4;
+	console.log("Setting style to: " + n);
+
+	if (n == "mcgolf") {
+		document.querySelectorAll(".scHeader").forEach((el) => {
+			el.classList.add("noShow");
+		});
+	} else {
+		document.querySelectorAll(".scHeader").forEach((el) => {
+			el.classList.remove("noShow");
+		});
+	}
 }
 function setOpacity(n) {
 	document.querySelectorAll(".scData > td").forEach((el) => {
@@ -121,11 +126,7 @@ bc.onmessage = (event) => {
 	}
 
 	if (event.data.style != null) {
-		console.log("event.data.command: " + event.data.command);
-		if (event.data.style == "style100") { styleChange(1); };
-		if (event.data.style == "style125") { styleChange(2); };
-		if (event.data.style == "style150") { styleChange(3); };
-		if (event.data.style == "style200") { styleChange(4); };
+		styleChange(event.data.style);
 	}
 }
 
@@ -152,7 +153,7 @@ bc.onmessage = (event) => {
 	if (localStorage.getItem("b_style") != null) {
 		styleChange(localStorage.getItem("b_style"));
 	} else {
-		styleChange(1);
+		styleChange("normal");
 	}
 	if (localStorage.getItem("opacity") > 0) {
 		opacity = localStorage.getItem("opacity") / 100;
