@@ -82,7 +82,8 @@
 		/* Read DOM to model */
 		p1Name = document.getElementById("p1Name").value;
 		p2Name = document.getElementById("p2Name").value;
-		p2Enabled = document.getElementById("p2Enabled").checked;
+		p2Style = document.getElementById("p2Style").value;
+		p2Enabled = p2Style != "none";
 		for (let i = 0; i < scoreCardHoles; i++) {
 			let holePar = document.getElementById("h"+(i+1)).value;
 			if (holePar > 0) {
@@ -121,7 +122,10 @@
 		bc.postMessage({
 				players: [ {player: 1, name: p1Name, color: p1Color, enabled: true },
 					   {player: 2, name: p2Name, color: p2Color, enabled: p2Enabled} ],
-				scoreCardHoles: scoreCardHoles, scoreCardPar: scoreCardPar });
+				scoreCardHoles: scoreCardHoles,
+				scoreCardPar: scoreCardPar,
+				playStyle: p2Style
+				});
 		let front9 = 0;
 		let back9 = 0;
 		for (let i = 0; i < scoreCardHoles; i++) {
@@ -305,19 +309,15 @@
 		}
 		p1Name = localStorage.getItem("p1NameCtrlPanel");
 		p2Name = localStorage.getItem("p2NameCtrlPanel");
-		p2Enabled = localStorage.getItem("p2Enabled") === "y";
+		p2Style = localStorage.getItem("p2Style");
+		p2Enabled = p2Style != "none";
 	}
 
 	function storeStaticScoreCardPar() {
 		localStorage.setItem("scoreCardPar", scoreCardPar.join());
 		localStorage.setItem("p1NameCtrlPanel", p1Name);
 		localStorage.setItem("p2NameCtrlPanel", p2Name);
-		if (p2Enabled) {
-			localStorage.setItem("p2Enabled", "y");
-		} else {
-			localStorage.removeItem("p2Enabled");
-		}
-
+		localStorage.setItem("p2Style", p2Style);
 	}
 
 	function loadScoreCard() {
@@ -398,6 +398,7 @@
 	var p1Color = "";
 	var p2Color = "";
 	var p2Enabled = false;
+	var p2Style = "none";
 	var scoreCardPar = [];
         var currentHole = 1;
         var p1Data = {
@@ -447,7 +448,7 @@
 	// Sync static score card to DOM
 	document.getElementById("p1Name").value = p1Name;
 	document.getElementById("p2Name").value = p2Name;
-	document.getElementById("p2Enabled").checked = p2Enabled;
+	document.getElementById("p2Style").value = p2Style;
 	scoreCardPar.forEach((holePar, i) => {
 		if (holePar > 0) {
 			document.getElementById("h"+(i+1)).value = holePar;

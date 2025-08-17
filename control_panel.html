@@ -58,8 +58,13 @@
 		<tr>
 		  <td>Player/Team 2 Name:</td>
 		  <td><input type="text" id="p2Name" placeholder="Player 2"></td>
-		  <td><input type="checkbox"
-			   id="p2Enabled" onclick="playerToggle()"></td>
+		  <td>
+		    <select id="p2Style" class="obs28 float1" onchange="playerToggle()">
+		      <option value="none" selected>None</option>
+		      <option value="stroke" selected>Stroke</option>
+		      <option value="match" selected>Match</option>
+		    </select>
+		  </td>
 		 </tr>
                </table>
 	       <!-- Scorecard creation -->
@@ -282,11 +287,11 @@ P2: - - - - - - - - -  - - - - - - - - - --
 		if (hotkeySwap != hotkeySwapOld){		swapColors();     hotkeySwapOld = hotkeySwap;	}
 	}
 
-        function playerToggle() {
-	   var p2Enabled = document.getElementById("p2Enabled");
-           var p2Name = document.getElementById("p2Name");
+	function playerToggle() {
+		const p2Style = document.getElementById("p2Style");
+		const p2Name = document.getElementById("p2Name");
 
-           p2Name.disabled = !p2Enabled.checked;
+		p2Name.disabled = p2Style.value == "none";
         }
 
 	function refreshData() {

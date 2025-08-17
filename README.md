@@ -17,6 +17,7 @@ your OBS live feed.  The scorecard supports:
  - A 3-Putt browser source `3putts.html` to track 3 putts for player 1's round.
  - Adjustable Opacity
  - Intuitive score entry controls in an OBS Dock
+ - Match play scoring for 2 Players or 2 Teams
 
 --------------------------------------------------------------
 

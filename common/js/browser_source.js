@@ -35,9 +35,10 @@ function renderScoreCard() {
 	setOpacity(staticScoreCard.opacity);
 }
 
-function setStaticScoreCard(scoreCardHoles, scoreCardPar) {
+function setStaticScoreCard(scoreCardHoles, scoreCardPar, playStyle) {
     staticScoreCard.holes = scoreCardHoles;
     staticScoreCard.par = scoreCardPar;
+    staticScoreCard.playStyle = playStyle;
     renderScoreCard();
 }
 
@@ -61,6 +62,16 @@ function styleChange(n) {
 	renderScoreCard();
 }
 
+function formatMatchScore(matchScore) {
+	if (matchScore == 0) {
+		return "<td class=\"blank\">&nbsp;</td>";
+	} else if (matchScore == 45) {
+		return "<td>AS</td>";
+	} else {
+		return "<td>" + matchScore + "&uarr;</td>";
+	}
+}
+
 function formatScore(playerScore, par, showPar) {
 	if (!playerScore || playerScore <= 0) {
 		if (showPar) {
@@ -79,10 +90,83 @@ function formatScore(playerScore, par, showPar) {
 	}
 }
 
+
+function formatScoreAtIndex(playerScores, i, par, showPar) {
+	if (staticScoreCard.playStyle == "match") {
+		return formatMatchScore(playerScores.matchScore[i]);
+	} else {
+		return formatScore(playerScores.scores[i], par, showPar);
+	}
+}
+
 function formatOverUnder(overUnder) {
 	return overUnder == 0 ? 'E' :
 		overUnder > 0 ? '+' + overUnder :
 		overUnder;
+}
+
+
+function calculateMatch(playerScores) {
+	playerScores[0].matchScore = [];
+	playerScores[1].matchScore = [];
+	playerScores[0].matchResult = 0;
+	playerScores[1].matchResult = 0;
+
+	// positive p2 is up, negative p1 is up, 0 is AS
+	let match = 0;
+	let holesRemaining = staticScoreCard.holes;
+	for (let i = 0; i < staticScoreCard.holes; i++) {
+		const p1Score = playerScores[0].scores[i];
+		const p2Score = playerScores[1].scores[i];
+		if (p1Score > 0 && p2Score > 0 && holesRemaining > 0) {
+			holesRemaining--;
+			if (p1Score > p2Score) {
+				match++;
+			} else if (p2Score > p1Score) {
+				match--;
+			}
+			if (match > 0) {
+				playerScores[0].matchScore[i] = 0;
+				playerScores[1].matchScore[i] = match;
+			} else if (match < 0) {
+				playerScores[0].matchScore[i] = Math.abs(match);
+				playerScores[1].matchScore[i] = 0;
+			} else {
+				// All Square
+				playerScores[0].matchScore[i] = 45;
+				playerScores[1].matchScore[i] = 45;
+			}
+
+			/* Check if match is finished */
+			if (holesRemaining == 0) {
+				if (match > 0) {
+					playerScores[0].matchResult = 0;
+					playerScores[1].matchResult = String(match) + "&uarr;";
+				} else if (match < 0) {
+					playerScores[0].matchResult = String(Math.abs(match)) + "&uarr;";
+					playerScores[1].matchResult = 0;
+				} else {
+					// All Square
+					playerScores[0].matchResult = "AS";
+					playerScores[1].matchResult = "AS";
+				}
+			} else if (Math.abs(match) > holesRemaining) {
+				/* Match is completed before all holes played */
+				if (match > 0) {
+					playerScores[0].matchResult = 0;
+					playerScores[1].matchResult = String(match) + '&' + String(holesRemaining);
+					holesRemaining = 0;
+				} else {
+					playerScores[0].matchResult = String(Math.abs(match)) + '&' + String(holesRemaining);
+					playerScores[1].matchResult = 0;
+					holesRemaining = 0;
+				}
+			}
+		} else {
+			playerScores[0].matchScore[i] = 0;
+			playerScores[1].matchScore[i] = 0;
+		}
+	}
 }
 
 function calculateScoreCard() {
@@ -127,6 +211,9 @@ function calculateScoreCard() {
 			}
 		}
 	}
+	if (staticScoreCard.playStyle == "match") {
+		calculateMatch(playerScores);
+	}
 	return {
 		frontPar: frontPar,
 		backPar: backPar,
@@ -136,7 +223,7 @@ function calculateScoreCard() {
 
 function formatScoreCardVertical() {
 
-	const scoreCard = calculateScore_;
+	const scoreCard = calculateScoreCard();
 	const playerScore = scoreCard.playerScores[0];
 
 	let html = "<table>"
@@ -190,19 +277,32 @@ function formatScoreCard() {
 		parRow += "<td>" + par + "</td>";
 
 		for (let k = 0; k < playerCount; k++) {
-			let playerScore = scoreCard.playerScores[k].scores[i];
-			playerScores[k].row += formatScore(playerScore, par, false);
+			playerScores[k].row += formatScoreAtIndex(scoreCard.playerScores[k], i, par, false);
 		}
 	}
 
 	let html = "<table>";
-	html += headerRow + "<td class=\"scTotal\">TOTAL</td></tr>";
+	if (staticScoreCard.playStyle == "match") {
+		html += headerRow + "<td class=\"scTotal\">RESULT</td></tr>";
+	} else {
+		html += headerRow + "<td class=\"scTotal\">TOTAL</td></tr>";
+	}
 	html += parRow + "<td class=\"scTotal\">PAR " + (scoreCard.frontPar + scoreCard.backPar) + "</td></td>";
 
 	for (let i = 0; i < playerCount; i++) {
-		let overUnder = scoreCard.playerScores[i].overUnder;
-		html += playerScores[i].row +
-			"<td class=\"scTotal\">" + formatOverUnder(overUnder) + "</td></tr>";
+		let totalTd = "";
+		if (staticScoreCard.playStyle == "match") {
+			let matchResult = scoreCard.playerScores[i].matchResult;
+			if (matchResult == 0) {
+				totalTd +="<td class=\"scTotal blank\">&nbsp;</td>x";
+			} else {
+				totalTd +="<td class=\"scTotal\">" + matchResult + "</td>";
+			}
+		} else {
+			let overUnder = scoreCard.playerScores[i].overUnder;
+			totalTd +="<td class=\"scTotal\">" + formatOverUnder(overUnder) + "</td>";
+		}
+		html += playerScores[i].row + totalTd + "</td>";
 	}
 	return html + "</table>";
 }
@@ -240,32 +340,40 @@ function formatScoreCardMcGolf() {
 		headerRow += "<td>" + (i+1) + "</td>";
 		parRow += "<td>" + par + "</td>";
 
-		if (i == 8) {
-			headerRow += "<td class=\"band\">OUT</td>";
-			parRow += "<td class=\"band\">" + scoreCard.frontPar + "</td>";
-		} else if (i == 17) {
-			headerRow += "<td class=\"band\">IN</td>";
-			parRow += "<td class=\"band\">" + scoreCard.backPar + "</td>";
+		if (staticScoreCard.playStyle != "match") {
+			if (i == 8) {
+				headerRow += "<td class=\"band\">OUT</td>";
+				parRow += "<td class=\"band\">" + scoreCard.frontPar + "</td>";
+			} else if (i == 17) {
+				headerRow += "<td class=\"band\">IN</td>";
+				parRow += "<td class=\"band\">" + scoreCard.backPar + "</td>";
+			}
 		}
 
 		for (let k = 0; k < playerCount; k++) {
-			let playerScore = scoreCard.playerScores[k].scores[i];
-			playerScores[k].row += formatScore(playerScore, par, false);
-			if (i == 8) {
-				playerScores[k].row += scoreFmt(scoreCard.playerScores[k].front, "band");
-			} else if (i == 17) {
-				playerScores[k].row += scoreFmt(scoreCard.playerScores[k].back, "band");
+			playerScores[k].row += formatScoreAtIndex(scoreCard.playerScores[k], i, par, false);
+			if (staticScoreCard.playStyle != "match") {
+				if (i == 8) {
+					playerScores[k].row += scoreFmt(scoreCard.playerScores[k].front, "band");
+				} else if (i == 17) {
+					playerScores[k].row += scoreFmt(scoreCard.playerScores[k].back, "band");
+				}
 			}
 		}
 	}
 
 	let html = "<table class=\"mcGolf\">";
-	html += headerRow + "<td class=\"mcScTotal\">TOTAL</td></tr>";
+	html += headerRow + (staticScoreCard.playStyle == "match" ? scoreFmt("RESULT") : scoreFmt("TOTAL"))  + "</tr>";
 	html += parRow + "<td class=\"mcScTotal\">" + (scoreCard.frontPar + scoreCard.backPar) + "</td></td>";
 
 	for (let i = 0; i < playerCount; i++) {
-		html += playerScores[i].row +
-			scoreFmt(scoreCard.playerScores[i].front + scoreCard.playerScores[i].back, "mcScTotal") + "</td>";
+		let totalTd = "";
+		if (staticScoreCard.playStyle == "match") {
+			totalTd += scoreFmt(scoreCard.playerScores[i].matchResult, "mcScTotal");
+		} else {
+			totalTd += scoreFmt(scoreCard.playerScores[i].front + scoreCard.playerScores[i].back, "mcScTotal");
+		}
+		html += playerScores[i].row + totalTd + "</tr>";
 	}
 	return html + "</table>";
 }
@@ -328,6 +436,7 @@ var staticScoreCard = {
    ],
    holes: 18,
    par: [],
+   playStyle: "none", // match, stroke
    opacity: 0.99,
    style: "horizontal"
 };
@@ -361,7 +470,10 @@ bc.onmessage = (event) => {
 				setPlayerName(i, "Player " + (i+1), player.color, player.enabled);
 			}
 		});
-		setStaticScoreCard(event.data.scoreCardHoles, event.data.scoreCardPar);
+		setStaticScoreCard(event.data.scoreCardHoles,
+			event.data.scoreCardPar,
+			event.data.playStyle
+			);
 	}
 
 	if (event.data.scores != null) {
@@ -380,11 +492,15 @@ bc.onmessage = (event) => {
 
 (() => {
 	/* Load Satic Score Card Data */
+	const playStyle = localStorage.getItem("p2Style");
+	if (playStyle != null) {
+		staticScoreCard.playStyle = playStyle;
+	}
 	if (localStorage.getItem("p1NameCtrlPanel") != null) {
 		staticScoreCard.players[0].name = localStorage.getItem("p1NameCtrlPanel");
 		staticScoreCard.players[0].color = localStorage.getItem("p1colorSet");
 	}
-	if (localStorage.getItem("p2NameCtrlPanel") != null && localStorage.getItem("p2Enabled") === "y") {
+	if (localStorage.getItem("p2NameCtrlPanel") != null && staticScoreCard.playStyle != "none") {
 		staticScoreCard.players[1] = {};
 		staticScoreCard.players[1].name = localStorage.getItem("p2NameCtrlPanel");
 		staticScoreCard.players[1].color = localStorage.getItem("p2colorSet");
@@ -393,7 +509,6 @@ bc.onmessage = (event) => {
 	if (storedScoreCardPar != null) {
 		staticScoreCard.par = storedScoreCardPar.split(",");
 	}
-
 	/* Load scores */
 	const p1ScoreCard = localStorage.getItem("p1ScoreCard");
 	if (p1ScoreCard != null) {
