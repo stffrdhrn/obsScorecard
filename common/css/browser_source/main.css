@@ -50,7 +50,11 @@ td.blank {
 	text-decoration: underline;
 }
 td.bogey {
-	color: red;
+	/* Shade of red for better contrast. */
+	/* color: #D5211B; */
+	color: #D5211B;
+	/* font-weight: bold; */
+	/* text-shadow: 1px 1px 5px #111; */
 }
 td.birdie {
 	color: lime;
