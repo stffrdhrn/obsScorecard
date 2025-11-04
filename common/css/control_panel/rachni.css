@@ -16,7 +16,7 @@
 	min-height:15px;
 	font-size:7pt;
 }
-#mainDiv {
+body, #mainDiv {
 	background: #232629;
 	color: lightgrey;
 }
@@ -26,7 +26,6 @@ hr {
 	border-top: 1px solid steelblue;
 	border-left: 0px;
 	border-right: 0px;
-	
 	}
 
 .btn {

@@ -16,7 +16,7 @@
 		min-height:15px;
 		font-size:7pt;
 	}
-	#mainDiv {
+	body, #mainDiv {
 		background: #2b2e38;
 		color: lightgrey;
 	}

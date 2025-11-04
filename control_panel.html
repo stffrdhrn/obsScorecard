@@ -9,12 +9,7 @@
 
 <html>
     <head>
-	<link rel="stylesheet" href="./common/css/control_panel/yami.css" />
 	<link rel="stylesheet" href="./common/css/control_panel/dark.css" />
-	<link rel="stylesheet" href="./common/css/control_panel/acri.css" />
-	<link rel="stylesheet" href="./common/css/control_panel/grey.css" />
-	<link rel="stylesheet" href="./common/css/control_panel/light.css" />
-	<link rel="stylesheet" href="./common/css/control_panel/rachni.css" />
 	<link rel="stylesheet" href="./common/css/control_panel/required.css" />
 	<script>
 	 //---------------------------------------------------------------------------------------------
@@ -36,14 +31,11 @@
 		    <option value="mcgolf" selected>McGolf</option>
 		</select>
 	      </div>
-	      <div class="themeSizeLabels" id="obsThemeDiv">Control theme:
-		<select class="obs28" name="Theme" id="obsTheme" onchange="obsThemeChange()">
-		    <option value="27" selected>dark</option>
-		    <option value="28">yami</option>
-		    <option value="acri">acri</option>
-		    <option value="grey">grey</option>
-		    <option value="light">light</option>
-		    <option value="rachni">rachni</option>
+	      <div class="themeSizeLabels" id="widgetStyleDiv">Widget style
+		<select class="obs28" id="widgetStyle" onchange="widgetStyleChange()">
+		    <option value="normal" selected>Normal</option>
+		    <option value="darkNumbers">Black</option>
+		    <option value="lightNumbers">White</option>
 		</select>
 	      </div>
 	    </div>

@@ -141,9 +141,17 @@ td.eagle {
 	color: black;
 }
 
- .noShow {
+.scHeader.lightNumbers, .scHeader.darkNumbers {
      visibility: hidden;
  }
+.scData.lightNumbers > td.scTotal {
+	background: none;
+	color: white;
+}
+.scData.darkNumbers > td.scTotal {
+	background: none;
+	color: black;
+}
 
  .fadeInElm {
      visibility: visible;

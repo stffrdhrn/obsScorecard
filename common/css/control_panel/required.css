@@ -27,7 +27,6 @@
 
 body {
 	font-family: "tahoma", sans-serif;
-	background: #2b2e38;
 }
 
 div {
@@ -120,7 +119,6 @@ input {
 
 .tooltip {
 }
-			
 .tooltip .tooltiptext {
 	visibility: hidden;
 	width:70px;

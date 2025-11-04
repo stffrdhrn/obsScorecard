@@ -11,20 +11,6 @@
 //						functions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////            
 
-function clearWinBlink() {
-	document.getElementById("player1Score").classList.remove("winBlink");
-	document.getElementById("player2Score").classList.remove("winBlink");
-}
-
-function sleep(milliseconds) {
-	var start = new Date().getTime();
-	for (var i = 0; i < 1e7; i++) {
-		if ((new Date().getTime() - start) > milliseconds) {
-			break;
-		}
-	}
-}
-
 function renderGirCounter() {
 	const girCount = document.getElementById("girCount");
 
@@ -58,36 +44,10 @@ function setScores(scores) {
     renderGirCounter();
 }
 
-function styleChange(n) {
-	console.log("Setting style to: " + n);
-
-	if (n == "mcgolf") {
-		document.querySelectorAll(".scHeader").forEach((el) => {
-			el.classList.add("noShow");
-		});
-	} else {
-		document.querySelectorAll(".scHeader").forEach((el) => {
-			el.classList.remove("noShow");
-		});
-	}
-}
-function setOpacity(n) {
-	document.querySelectorAll(".scData > td").forEach((el) => {
-		el.style.background = 'rgb(120 120 120 / ' + (100*Number(n)) + '%)';
-	});
-	document.querySelectorAll(".scData > td.scName").forEach((el, i) => {
-		el.style.background = 'linear-gradient(to left, rgb(120 120 120 / ' + (100*Number(n)) + '%), ' +
-					staticScoreCard.players[i].color + ")";
-	});
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //										variable declarations
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////			
 
-const bc = new BroadcastChannel('sc-main');
-
-var opacity = 0.99;
 var staticScoreCard = {
    players: [
      { name: "Player 1", color: "" }
@@ -107,14 +67,7 @@ var scoreCard = {
 //										broadcast channel events
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////			
 
-bc.onmessage = (event) => {
-
-	if (event.data.opacity != null) {
-		console.log("event.data(opacity): " + event.data.opacity);
-		opacity = event.data.opacity;
-		setOpacity(opacity);
-	}
-
+registerBroadCastHandler((event) => {
 	// Static scorecard update has players and scorecard data, we just
 	// need the numbers.
 	if (event.data.players != null) {
@@ -124,11 +77,7 @@ bc.onmessage = (event) => {
 	if (event.data.scores != null) {
 		setScores(event.data.scores);
 	}
-
-	if (event.data.style != null) {
-		styleChange(event.data.style);
-	}
-}
+});
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //							autostart stuff
@@ -148,16 +97,6 @@ bc.onmessage = (event) => {
 	const p1Putts = localStorage.getItem("p1Putts");
 	if (p1Putts != null) {
 		scoreCard.players[0].putts = p1Putts.split(",");
-	}
-
-	if (localStorage.getItem("b_style") != null) {
-		styleChange(localStorage.getItem("b_style"));
-	} else {
-		styleChange("normal");
-	}
-	if (localStorage.getItem("opacity") > 0) {
-		opacity = localStorage.getItem("opacity") / 100;
-		setOpacity(opacity);
 	}
 	renderGirCounter();
 })();

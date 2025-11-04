@@ -15,6 +15,13 @@
 		localStorage.setItem("b_style", bsStyle);
 	}
 
+	function widgetStyleChange() {
+		const oldWidgetStyle = localStorage.getItem("widgetStyle");
+		const widgetStyle = document.getElementById("widgetStyle").value;
+		bc.postMessage({oldWidgetStyle: oldWidgetStyle, widgetStyle: widgetStyle});
+		localStorage.setItem("widgetStyle", widgetStyle);
+	}
+
 	function setSelectColor(divId, cvalue) {
 		const selectDiv = document.getElementById(divId);
 
@@ -364,29 +371,6 @@
 		} else { }
 	}
 
-	function obsThemeChange() {
-		const styleToBackground = new Map([
-			["28", "#2b2e38"],
-			["27", "#1f1e1f"],
-			["acri", "#181819"],
-			["grey", "#2f2f2f"],
-			["light", "#e5e5e5"],
-			["rachni", "#232629"],
-		]);
-
-		const obsTheme = document.getElementById("obsTheme").value;
-
-		localStorage.setItem("obsTheme", obsTheme);
-		document.getElementById("obsTheme").value = obsTheme;
-		document.getElementsByTagName("body")[0].style.background = styleToBackground.get(obsTheme);
-		document.styleSheets[0].disabled = obsTheme !== "28";
-		document.styleSheets[1].disabled = obsTheme !== "27";
-		document.styleSheets[2].disabled = obsTheme !== "acri";
-		document.styleSheets[3].disabled = obsTheme !== "grey";
-		document.styleSheets[4].disabled = obsTheme !== "light";
-		document.styleSheets[5].disabled = obsTheme !== "rachni";
-	}
-
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// variable declarations
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -458,9 +442,9 @@
 	loadScoreCard();
 	renderScoreCard();
 
-	const obsTheme = localStorage.getItem("obsTheme");
-	if (obsTheme !== null) {
-		document.getElementById("obsTheme").value = obsTheme;
+	const widgetStyle = localStorage.getItem("widgetStyle");
+	if (widgetStyle !== null) {
+		document.getElementById("widgetStyle").value = widgetStyle;
 	}
 	const style = localStorage.getItem("b_style");
 	if (style !== null) {
@@ -472,5 +456,4 @@
 	}
 	document.getElementById("verNum").innerHTML = versionNum;
 	postNames();
-	obsThemeChange();
 
