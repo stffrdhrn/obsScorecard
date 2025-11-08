@@ -50,16 +50,16 @@ td.blank {
 	text-decoration: underline;
 }
 td.bogey {
-	/* Shade of red for better contrast. */
-	/* color: #D5211B; */
-	color: #D5211B;
-	/* font-weight: bold; */
-	/* text-shadow: 1px 1px 5px #111; */
+	color: #000080;
+	/* -webkit-text-stroke: 1px white; */
+	text-rendering: optimizeLegibility;
 }
 td.birdie {
 	color: lime;
+	/* -webkit-text-stroke: 1px black; */
 }
 td.eagle {
+	/* -webkit-text-stroke: 1px black; */
 	color: yellow;
 }
 
